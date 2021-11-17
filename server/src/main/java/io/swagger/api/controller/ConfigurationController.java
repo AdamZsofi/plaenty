@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/configuration")
 public class ConfigurationController implements ConfigurationApi {
@@ -37,7 +39,7 @@ public class ConfigurationController implements ConfigurationApi {
 	@Override
 	@PostMapping
 	@SecurityRequirement(name = "oAuthSecurity")
-	public ResponseEntity<Void> configurationPost(@RequestBody Configuration body) {
+	public ResponseEntity<Void> configurationPost(@Valid @RequestBody Configuration body) {
 		return null;
 	}
 }
