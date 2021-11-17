@@ -1,0 +1,251 @@
+openapi: 3.0.0
+info:
+  description: "This is the REST API of the Plaenty project."
+  version: "1.0.0"
+  title: "Plaenty API"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+components:
+  securitySchemes:
+    oAuthSecurity:
+      type: oauth2
+      flows: 
+        implicit: 
+          authorizationUrl: https://api.example.com/oauth2/authorize
+          scopes: {}
+  schemas:
+    configuration:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        ecmin:
+          type: string
+          format: double
+        ecmax:
+          type: string
+          format: double
+        phmin:
+          type: string
+          format: double
+        phmax:
+          type: string
+          format: double
+        lightrequired:
+          type: string
+          enum: [low, normal, high]
+        pumpon:
+          type: integer # minutes
+        pumpoff:
+          type: integer # minutes
+    sensor:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        dimension:
+          type: string
+    sensordata:
+      properties:
+        time:
+          type: string
+          format: date-time
+        value:
+          type: string
+          format: double # jó double-nek?
+    sensorlist:
+      type: array
+      items:
+        type: object
+        allOf:
+        - $ref: '#/components/schemas/sensor'
+    sensordatalist:
+      type: array
+      items:
+        type: object
+        allOf:
+        - $ref: '#/components/schemas/sensordata'
+    systemstate:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        activeconfiguration:
+          $ref: '#/components/schemas/configuration'
+        sensorstate:
+          type: array
+          items:
+            type: object
+            properties:
+              sensor:
+                $ref: '#/components/schemas/sensor'
+              data:
+                $ref: '#/components/schemas/sensordata'
+paths:
+  /dashboard:
+    get:
+      tags:
+      - "dashboard"
+      summary: "Sends the present state of the system"
+      description: "Returns if the system is functional and the value of sensors, actuators, active configuration, etc."
+      operationId: "sendDashboardData"
+      responses:
+        "200":
+          description: "The present state of the system"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/systemstate'
+        "404":
+          description: "Error: Cannot get system status"
+  /sensor/data/{sensorid}:
+    get:
+      tags:
+      - "sensor"
+      summary: "Returns the historical data measured by a sensor"
+      description: "Returns the measurements taken on the given sensor from the given date and time"
+      operationId: "sendSensorData"
+      parameters:
+      - in: "path"
+        name: "sensorid"
+        required: true
+        schema:
+          type: integer
+          description: "ID of the sensor we should return data about"
+      - in: "query"
+        name: "from"
+        schema:
+          type: string
+          format: date-time
+          description: "The historical data will be between this point in time and the present time. Should be a point in time which happened already. Default value is returning all of the measurements."
+      responses:
+        "200":
+          description: "The requested historical data on a single sensor"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sensordatalist'
+  /sensor/list/:
+    get:
+      tags:
+      - "sensor"
+      summary: "Returns the sensors of the system (name and id)"
+      operationId: "sendSensorList"
+      responses:
+        "200":
+          description: "The list of sensors (names with ids)"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sensorlist'
+  /active-configuration:
+    get:
+      tags:
+      - "configuration"
+      summary: "Returns the active configuration"
+      description: "Return all the configuration information of the active configuration"
+      operationId: "activeConfiguration"
+      responses:
+        "200":
+          description: "The active configuration of the system"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/configuration'
+        "404":
+          description: "Error: No active configuration in system"
+  /active-configuration/{id}:
+    put:
+      tags:
+      - "configuration"
+      summary: "Updates the current configuration based on the given id"
+      security:
+      - oAuthSecurity: []
+      parameters:
+      - in: "path"
+        name: "id"
+        required: true
+        schema:
+          type: integer
+          description: "configuration id"
+      responses:
+        "200": # jo, ha ezt adom vissza? vagy mas kene?
+          description: "The (updated) active configuration of the system"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/configuration'
+  /configuration/{id}:
+    get:
+      tags:
+      - "configuration"
+      summary: "Returns the details of the configuration with the given id"
+      description: "Return all the configuration information of the configuration with the given id"
+      parameters:
+      - in: "path"
+        name: "id"
+        required: true
+        schema:
+          type: integer # integer?
+          description: "configuration id"
+      responses:
+        "200":
+          description: "The active configuration of the system"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/configuration'
+    put:
+      tags:
+      - "configuration"
+      summary: "Update existing configurations"
+      security:
+      - oAuthSecurity: []
+      parameters:
+      - in: "path"
+        name: "id"
+        required: true
+        schema:
+          type: integer
+          description: "configuration id"
+      responses:
+        "200":
+          description: "Ok"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/configuration'
+  /configuration:
+    post:
+      tags:
+      - "configuration"
+      summary: "Add a new configuration"
+      description: "Adds a new configuration and returns the newly added configuration in the response"
+      security:
+      - oAuthSecurity: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/configuration"
+      responses:
+        "200":
+          description: "Ok"
+  /configuration/list:
+    get:
+      tags:
+      - "configuration"
+      summary: "Returns a list of all the configurations"
+      description: "Returns a list of all the configurations"
+      responses:
+        "200":
+          description: "The active configuration of the system"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/configuration'
