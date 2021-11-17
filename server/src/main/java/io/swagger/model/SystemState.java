@@ -1,2 +1,4 @@
-package io.swagger.model;public class SystemState {
+package io.swagger.model;
+
+public class SystemState {
 }
