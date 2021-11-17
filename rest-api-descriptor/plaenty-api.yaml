@@ -72,8 +72,6 @@ components:
       properties:
         id:
           type: integer
-        name:
-          type: string
         activeconfiguration:
           $ref: '#/components/schemas/configuration'
         sensorstate:
