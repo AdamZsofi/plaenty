@@ -32,7 +32,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-11-17T14:19:30.068Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-11-17T15:48:40.301Z[GMT]")
 @Validated
 public interface ActiveConfigurationApi {
 
@@ -40,7 +40,7 @@ public interface ActiveConfigurationApi {
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "The active configuration of the system", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ModelConfiguration.class))),
         
-        @ApiResponse(responseCode = "404", description = "Error: No active configuration in system") })
+        @ApiResponse(responseCode = "404", description = "Not found: No active configuration in system") })
     @RequestMapping(value = "/active-configuration",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
@@ -51,7 +51,9 @@ public interface ActiveConfigurationApi {
         @SecurityRequirement(name = "oAuthSecurity", scopes = {
                     })    }, tags={ "configuration" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "The (updated) active configuration of the system", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ModelConfiguration.class))) })
+        @ApiResponse(responseCode = "200", description = "The (updated) active configuration of the system", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ModelConfiguration.class))),
+        
+        @ApiResponse(responseCode = "500", description = "Internal error: server could not set active configuration") })
     @RequestMapping(value = "/active-configuration/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.PUT)

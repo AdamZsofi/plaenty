@@ -32,7 +32,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-11-17T14:19:30.068Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-11-17T15:48:40.301Z[GMT]")
 @Validated
 public interface DashboardApi {
 
@@ -40,7 +40,7 @@ public interface DashboardApi {
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "The present state of the system", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Systemstate.class))),
         
-        @ApiResponse(responseCode = "404", description = "Error: Cannot get system status") })
+        @ApiResponse(responseCode = "404", description = "Not found: Cannot get system status") })
     @RequestMapping(value = "/dashboard",
         produces = { "application/json" }, 
         method = RequestMethod.GET)

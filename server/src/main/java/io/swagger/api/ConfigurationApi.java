@@ -32,13 +32,17 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-11-17T14:19:30.068Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-11-17T15:48:40.301Z[GMT]")
 @Validated
 public interface ConfigurationApi {
 
     @Operation(summary = "Returns the details of the configuration with the given id", description = "Return all the configuration information of the configuration with the given id", tags={ "configuration" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "The active configuration of the system", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ModelConfiguration.class))) })
+        @ApiResponse(responseCode = "200", description = "The active configuration of the system", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ModelConfiguration.class))),
+        
+        @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+        
+        @ApiResponse(responseCode = "404", description = "Configuration not found") })
     @RequestMapping(value = "/configuration/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
@@ -49,7 +53,9 @@ public interface ConfigurationApi {
         @SecurityRequirement(name = "oAuthSecurity", scopes = {
                     })    }, tags={ "configuration" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ModelConfiguration.class))) })
+        @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ModelConfiguration.class))),
+        
+        @ApiResponse(responseCode = "500", description = "Internal error: Could not update configuration") })
     @RequestMapping(value = "/configuration/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.PUT)
@@ -69,7 +75,9 @@ public interface ConfigurationApi {
         @SecurityRequirement(name = "oAuthSecurity", scopes = {
                     })    }, tags={ "configuration" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Ok") })
+        @ApiResponse(responseCode = "200", description = "Ok"),
+        
+        @ApiResponse(responseCode = "500", description = "Internal error: Could not add configuration") })
     @RequestMapping(value = "/configuration",
         consumes = { "application/json" }, 
         method = RequestMethod.POST)
