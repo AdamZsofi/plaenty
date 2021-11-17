@@ -70,8 +70,6 @@ components:
         - $ref: '#/components/schemas/sensordata'
     systemstate:
       properties:
-        id:
-          type: integer
         activeconfiguration:
           $ref: '#/components/schemas/configuration'
         sensorstate:
