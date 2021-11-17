@@ -1,4 +1,10 @@
 package io.swagger.model;
 
-public class SystemState {
+import lombok.Data;
+
+import java.util.HashMap;
+
+public @Data class SystemState {
+	private Configuration activeConfiguration;
+	private HashMap<Sensor, SensorData> sensorstate;
 }

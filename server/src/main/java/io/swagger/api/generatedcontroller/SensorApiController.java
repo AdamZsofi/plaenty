@@ -1,4 +1,4 @@
-package io.swagger.api.controller;
+package io.swagger.api.generatedcontroller;
 
 import io.swagger.api.interfaces.SensorApi;
 import org.threeten.bp.OffsetDateTime;

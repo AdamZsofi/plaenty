@@ -1,12 +1,13 @@
 package io.swagger.model;
 
+import lombok.Data;
 import nonapi.io.github.classgraph.json.Id;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 
 @Entity
-public class Configuration {
+public @Data class Configuration {
 	@javax.persistence.Id
 	@Id
 	@GeneratedValue

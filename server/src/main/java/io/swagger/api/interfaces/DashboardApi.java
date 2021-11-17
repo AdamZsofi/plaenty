@@ -5,7 +5,7 @@
  */
 package io.swagger.api.interfaces;
 
-import io.swagger.model.generated.Systemstate;
+import io.swagger.model.generated.SystemState;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -22,13 +22,13 @@ public interface DashboardApi {
 
     @Operation(summary = "Sends the present state of the system", description = "Returns if the system is functional and the value of sensors, actuators, active configuration, etc.", tags={ "dashboard" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "The present state of the system", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Systemstate.class))),
+        @ApiResponse(responseCode = "200", description = "The present state of the system", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SystemState.class))),
         
         @ApiResponse(responseCode = "404", description = "Not found: Cannot get system status") })
     @RequestMapping(value = "/dashboard",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Systemstate> sendDashboardData();
+    ResponseEntity<SystemState> sendDashboardData();
 
 }
 

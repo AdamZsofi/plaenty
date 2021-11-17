@@ -5,7 +5,7 @@
  */
 package io.swagger.api.interfaces;
 
-import io.swagger.model.generated.ModelConfiguration;
+import io.swagger.model.generated.Configuration;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -29,7 +29,7 @@ public interface ConfigurationApi {
 
     @Operation(summary = "Returns the details of the configuration with the given id", description = "Return all the configuration information of the configuration with the given id", tags={ "configuration" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "The active configuration of the system", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ModelConfiguration.class))),
+        @ApiResponse(responseCode = "200", description = "The active configuration of the system", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Configuration.class))),
         
         @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
         
@@ -37,29 +37,29 @@ public interface ConfigurationApi {
     @RequestMapping(value = "/configuration/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<ModelConfiguration> configurationIdGet(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("id") Integer id);
+    ResponseEntity<Configuration> configurationIdGet(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("id") Integer id);
 
 
     @Operation(summary = "Update existing configurations", description = "", security = {
         @SecurityRequirement(name = "oAuthSecurity", scopes = {
                     })    }, tags={ "configuration" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ModelConfiguration.class))),
+        @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Configuration.class))),
         
         @ApiResponse(responseCode = "500", description = "Internal error: Could not update configuration") })
     @RequestMapping(value = "/configuration/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.PUT)
-    ResponseEntity<ModelConfiguration> configurationIdPut(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("id") Integer id);
+    ResponseEntity<Configuration> configurationIdPut(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("id") Integer id);
 
 
     @Operation(summary = "Returns a list of all the configurations", description = "Returns a list of all the configurations", tags={ "configuration" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "The active configuration of the system", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ModelConfiguration.class))) })
+        @ApiResponse(responseCode = "200", description = "The active configuration of the system", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Configuration.class))) })
     @RequestMapping(value = "/configuration/list",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<ModelConfiguration> configurationListGet();
+    ResponseEntity<Configuration> configurationListGet();
 
 
     @Operation(summary = "Add a new configuration", description = "Adds a new configuration and returns the newly added configuration in the response", security = {
@@ -72,7 +72,7 @@ public interface ConfigurationApi {
     @RequestMapping(value = "/configuration",
         consumes = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<Void> configurationPost(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody ModelConfiguration body);
+    ResponseEntity<Void> configurationPost(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Configuration body);
 
 }
 

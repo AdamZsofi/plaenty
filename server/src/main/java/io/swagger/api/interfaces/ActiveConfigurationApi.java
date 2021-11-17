@@ -5,7 +5,7 @@
  */
 package io.swagger.api.interfaces;
 
-import io.swagger.model.generated.ModelConfiguration;
+import io.swagger.model.generated.Configuration;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -26,26 +26,26 @@ public interface ActiveConfigurationApi {
 
     @Operation(summary = "Returns the active configuration", description = "Return all the configuration information of the active configuration", tags={ "configuration" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "The active configuration of the system", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ModelConfiguration.class))),
+        @ApiResponse(responseCode = "200", description = "The active configuration of the system", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Configuration.class))),
         
         @ApiResponse(responseCode = "404", description = "Not found: No active configuration in system") })
     @RequestMapping(value = "/active-configuration",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<ModelConfiguration> activeConfiguration();
+    ResponseEntity<Configuration> activeConfiguration();
 
 
     @Operation(summary = "Updates the current configuration based on the given id", description = "", security = {
         @SecurityRequirement(name = "oAuthSecurity", scopes = {
                     })    }, tags={ "configuration" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "The (updated) active configuration of the system", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ModelConfiguration.class))),
+        @ApiResponse(responseCode = "200", description = "The (updated) active configuration of the system", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Configuration.class))),
         
         @ApiResponse(responseCode = "500", description = "Internal error: server could not set active configuration") })
     @RequestMapping(value = "/active-configuration/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.PUT)
-    ResponseEntity<ModelConfiguration> activeConfigurationIdPut(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("id") Integer id);
+    ResponseEntity<Configuration> activeConfigurationIdPut(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("id") Integer id);
 
 }
 

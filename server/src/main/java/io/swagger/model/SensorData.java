@@ -1,5 +1,6 @@
 package io.swagger.model;
 
+import lombok.Data;
 import nonapi.io.github.classgraph.json.Id;
 
 import javax.persistence.GeneratedValue;
@@ -8,7 +9,8 @@ import java.time.LocalDateTime;
 /**
  * A single measurement taken by a given sensor
  */
-public class SensorData {
+public @Data
+class SensorData {
 	@javax.persistence.Id
 	@Id
 	@GeneratedValue

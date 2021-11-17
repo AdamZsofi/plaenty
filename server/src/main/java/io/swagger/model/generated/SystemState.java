@@ -14,8 +14,8 @@ import javax.validation.Valid;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-11-17T15:48:40.301Z[GMT]")
 
-
-public class Systemstate   {
+// TODO idea: make this into "System" (or make a System class) and use it as a static config class which can return this class
+public class SystemState {
   @JsonProperty("id")
   private Integer id = null;
 
@@ -23,13 +23,13 @@ public class Systemstate   {
   private String name = null;
 
   @JsonProperty("activeconfiguration")
-  private ModelConfiguration activeconfiguration = null;
+  private Configuration activeconfiguration = null;
 
   @JsonProperty("sensorstate")
   @Valid
   private List<SystemstateSensorstate> sensorstate = null;
 
-  public Systemstate id(Integer id) {
+  public SystemState id(Integer id) {
     this.id = id;
     return this;
   }
@@ -48,7 +48,7 @@ public class Systemstate   {
     this.id = id;
   }
 
-  public Systemstate name(String name) {
+  public SystemState name(String name) {
     this.name = name;
     return this;
   }
@@ -67,7 +67,7 @@ public class Systemstate   {
     this.name = name;
   }
 
-  public Systemstate activeconfiguration(ModelConfiguration activeconfiguration) {
+  public SystemState activeconfiguration(Configuration activeconfiguration) {
     this.activeconfiguration = activeconfiguration;
     return this;
   }
@@ -79,20 +79,20 @@ public class Systemstate   {
   @Schema(description = "")
   
     @Valid
-    public ModelConfiguration getActiveconfiguration() {
+    public Configuration getActiveconfiguration() {
     return activeconfiguration;
   }
 
-  public void setActiveconfiguration(ModelConfiguration activeconfiguration) {
+  public void setActiveconfiguration(Configuration activeconfiguration) {
     this.activeconfiguration = activeconfiguration;
   }
 
-  public Systemstate sensorstate(List<SystemstateSensorstate> sensorstate) {
+  public SystemState sensorstate(List<SystemstateSensorstate> sensorstate) {
     this.sensorstate = sensorstate;
     return this;
   }
 
-  public Systemstate addSensorstateItem(SystemstateSensorstate sensorstateItem) {
+  public SystemState addSensorstateItem(SystemstateSensorstate sensorstateItem) {
     if (this.sensorstate == null) {
       this.sensorstate = new ArrayList<SystemstateSensorstate>();
     }
@@ -123,7 +123,7 @@ public class Systemstate   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Systemstate systemstate = (Systemstate) o;
+    SystemState systemstate = (SystemState) o;
     return Objects.equals(this.id, systemstate.id) &&
         Objects.equals(this.name, systemstate.name) &&
         Objects.equals(this.activeconfiguration, systemstate.activeconfiguration) &&

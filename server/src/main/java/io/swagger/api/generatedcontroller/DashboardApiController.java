@@ -1,7 +1,7 @@
-package io.swagger.api.controller;
+package io.swagger.api.generatedcontroller;
 
 import io.swagger.api.interfaces.DashboardApi;
-import io.swagger.model.generated.Systemstate;
+import io.swagger.model.generated.SystemState;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,18 +28,18 @@ public class DashboardApiController implements DashboardApi {
         this.request = request;
     }
 
-    public ResponseEntity<Systemstate> sendDashboardData() {
+    public ResponseEntity<SystemState> sendDashboardData() {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Systemstate>(objectMapper.readValue("{\n  \"id\" : 0,\n  \"sensorstate\" : [ {\n    \"data\" : {\n      \"time\" : \"2000-01-23T04:56:07.000+00:00\",\n      \"value\" : \"value\"\n    },\n    \"sensor\" : {\n      \"name\" : \"name\",\n      \"id\" : 5,\n      \"dimension\" : \"dimension\"\n    }\n  }, {\n    \"data\" : {\n      \"time\" : \"2000-01-23T04:56:07.000+00:00\",\n      \"value\" : \"value\"\n    },\n    \"sensor\" : {\n      \"name\" : \"name\",\n      \"id\" : 5,\n      \"dimension\" : \"dimension\"\n    }\n  } ],\n  \"activeconfiguration\" : {\n    \"phmin\" : \"phmin\",\n    \"pumpoff\" : 5,\n    \"lightrequired\" : \"low\",\n    \"pumpon\" : 1,\n    \"phmax\" : \"phmax\",\n    \"name\" : \"name\",\n    \"ecmin\" : \"ecmin\",\n    \"id\" : 6,\n    \"ecmax\" : \"ecmax\"\n  }\n}", Systemstate.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<SystemState>(objectMapper.readValue("{\n  \"id\" : 0,\n  \"sensorstate\" : [ {\n    \"data\" : {\n      \"time\" : \"2000-01-23T04:56:07.000+00:00\",\n      \"value\" : \"value\"\n    },\n    \"sensor\" : {\n      \"name\" : \"name\",\n      \"id\" : 5,\n      \"dimension\" : \"dimension\"\n    }\n  }, {\n    \"data\" : {\n      \"time\" : \"2000-01-23T04:56:07.000+00:00\",\n      \"value\" : \"value\"\n    },\n    \"sensor\" : {\n      \"name\" : \"name\",\n      \"id\" : 5,\n      \"dimension\" : \"dimension\"\n    }\n  } ],\n  \"activeconfiguration\" : {\n    \"phmin\" : \"phmin\",\n    \"pumpoff\" : 5,\n    \"lightrequired\" : \"low\",\n    \"pumpon\" : 1,\n    \"phmax\" : \"phmax\",\n    \"name\" : \"name\",\n    \"ecmin\" : \"ecmin\",\n    \"id\" : 6,\n    \"ecmax\" : \"ecmax\"\n  }\n}", SystemState.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Systemstate>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<SystemState>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<Systemstate>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<SystemState>(HttpStatus.NOT_IMPLEMENTED);
     }
 
 }

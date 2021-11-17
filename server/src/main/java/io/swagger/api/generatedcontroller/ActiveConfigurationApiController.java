@@ -1,7 +1,7 @@
-package io.swagger.api.controller;
+package io.swagger.api.generatedcontroller;
 
 import io.swagger.api.interfaces.ActiveConfigurationApi;
-import io.swagger.model.generated.ModelConfiguration;
+import io.swagger.model.generated.Configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -32,32 +32,32 @@ public class ActiveConfigurationApiController implements ActiveConfigurationApi 
         this.request = request;
     }
 
-    public ResponseEntity<ModelConfiguration> activeConfiguration() {
+    public ResponseEntity<Configuration> activeConfiguration() {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<ModelConfiguration>(objectMapper.readValue("{\n  \"phmin\" : \"phmin\",\n  \"pumpoff\" : 5,\n  \"lightrequired\" : \"low\",\n  \"pumpon\" : 1,\n  \"phmax\" : \"phmax\",\n  \"name\" : \"name\",\n  \"ecmin\" : \"ecmin\",\n  \"id\" : 6,\n  \"ecmax\" : \"ecmax\"\n}", ModelConfiguration.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<Configuration>(objectMapper.readValue("{\n  \"phmin\" : \"phmin\",\n  \"pumpoff\" : 5,\n  \"lightrequired\" : \"low\",\n  \"pumpon\" : 1,\n  \"phmax\" : \"phmax\",\n  \"name\" : \"name\",\n  \"ecmin\" : \"ecmin\",\n  \"id\" : 6,\n  \"ecmax\" : \"ecmax\"\n}", Configuration.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<ModelConfiguration>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<Configuration>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<ModelConfiguration>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Configuration>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<ModelConfiguration> activeConfigurationIdPut(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("id") Integer id) {
+    public ResponseEntity<Configuration> activeConfigurationIdPut(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("id") Integer id) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<ModelConfiguration>(objectMapper.readValue("{\n  \"phmin\" : \"phmin\",\n  \"pumpoff\" : 5,\n  \"lightrequired\" : \"low\",\n  \"pumpon\" : 1,\n  \"phmax\" : \"phmax\",\n  \"name\" : \"name\",\n  \"ecmin\" : \"ecmin\",\n  \"id\" : 6,\n  \"ecmax\" : \"ecmax\"\n}", ModelConfiguration.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<Configuration>(objectMapper.readValue("{\n  \"phmin\" : \"phmin\",\n  \"pumpoff\" : 5,\n  \"lightrequired\" : \"low\",\n  \"pumpon\" : 1,\n  \"phmax\" : \"phmax\",\n  \"name\" : \"name\",\n  \"ecmin\" : \"ecmin\",\n  \"id\" : 6,\n  \"ecmax\" : \"ecmax\"\n}", Configuration.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<ModelConfiguration>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<Configuration>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<ModelConfiguration>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Configuration>(HttpStatus.NOT_IMPLEMENTED);
     }
 
 }

@@ -14,7 +14,7 @@ import org.springframework.validation.annotation.Validated;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-11-17T15:48:40.301Z[GMT]")
 
 
-public class ModelConfiguration   {
+public class Configuration {
   @JsonProperty("id")
   private Integer id = null;
 
@@ -74,7 +74,7 @@ public class ModelConfiguration   {
   @JsonProperty("pumpoff")
   private Integer pumpoff = null;
 
-  public ModelConfiguration id(Integer id) {
+  public Configuration id(Integer id) {
     this.id = id;
     return this;
   }
@@ -93,7 +93,7 @@ public class ModelConfiguration   {
     this.id = id;
   }
 
-  public ModelConfiguration name(String name) {
+  public Configuration name(String name) {
     this.name = name;
     return this;
   }
@@ -112,7 +112,7 @@ public class ModelConfiguration   {
     this.name = name;
   }
 
-  public ModelConfiguration ecmin(String ecmin) {
+  public Configuration ecmin(String ecmin) {
     this.ecmin = ecmin;
     return this;
   }
@@ -131,7 +131,7 @@ public class ModelConfiguration   {
     this.ecmin = ecmin;
   }
 
-  public ModelConfiguration ecmax(String ecmax) {
+  public Configuration ecmax(String ecmax) {
     this.ecmax = ecmax;
     return this;
   }
@@ -150,7 +150,7 @@ public class ModelConfiguration   {
     this.ecmax = ecmax;
   }
 
-  public ModelConfiguration phmin(String phmin) {
+  public Configuration phmin(String phmin) {
     this.phmin = phmin;
     return this;
   }
@@ -169,7 +169,7 @@ public class ModelConfiguration   {
     this.phmin = phmin;
   }
 
-  public ModelConfiguration phmax(String phmax) {
+  public Configuration phmax(String phmax) {
     this.phmax = phmax;
     return this;
   }
@@ -188,7 +188,7 @@ public class ModelConfiguration   {
     this.phmax = phmax;
   }
 
-  public ModelConfiguration lightrequired(LightrequiredEnum lightrequired) {
+  public Configuration lightrequired(LightrequiredEnum lightrequired) {
     this.lightrequired = lightrequired;
     return this;
   }
@@ -207,7 +207,7 @@ public class ModelConfiguration   {
     this.lightrequired = lightrequired;
   }
 
-  public ModelConfiguration pumpon(Integer pumpon) {
+  public Configuration pumpon(Integer pumpon) {
     this.pumpon = pumpon;
     return this;
   }
@@ -226,7 +226,7 @@ public class ModelConfiguration   {
     this.pumpon = pumpon;
   }
 
-  public ModelConfiguration pumpoff(Integer pumpoff) {
+  public Configuration pumpoff(Integer pumpoff) {
     this.pumpoff = pumpoff;
     return this;
   }
@@ -254,7 +254,7 @@ public class ModelConfiguration   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ModelConfiguration _configuration = (ModelConfiguration) o;
+    Configuration _configuration = (Configuration) o;
     return Objects.equals(this.id, _configuration.id) &&
         Objects.equals(this.name, _configuration.name) &&
         Objects.equals(this.ecmin, _configuration.ecmin) &&
