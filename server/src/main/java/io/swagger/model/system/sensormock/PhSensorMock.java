@@ -1,10 +1,10 @@
-package io.swagger.sensormock;
+package io.swagger.model.system.sensormock;
 
-import io.swagger.model.sensor.Sensor;
+import io.swagger.model.system.sensor.Sensor;
 
 public class PhSensorMock extends Sensor {
 	public PhSensorMock(String name) {
-		super("mockPhSensor", "");
+		super(name, "");
 	}
 
 	@Override

@@ -1,6 +1,9 @@
 package io.swagger.model.system;
 
-import io.swagger.model.sensor.Sensor;
+import io.swagger.model.system.sensor.Sensor;
+import io.swagger.model.system.sensormock.EcSensorMock;
+import io.swagger.model.system.sensormock.NaturalLightSensorMock;
+import io.swagger.model.system.sensormock.PhSensorMock;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,9 +16,9 @@ public class System {
 
 	private static System instance = new System();
 	private System() {
-		sensors.add(new Sensor("pH sensor", ""));
-		sensors.add(new Sensor("EC sensor", "dS/m"));
-		sensors.add(new Sensor("light sensor", "lux"));
+		sensors.add(new PhSensorMock("mock pH sensor"));
+		sensors.add(new EcSensorMock("mock EC sensor"));
+		sensors.add(new NaturalLightSensorMock("mock light sensor"));
 	}
 
 	public System getInstance() {

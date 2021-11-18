@@ -1,11 +1,7 @@
-package io.swagger.model.sensor;
+package io.swagger.model.system.sensor;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import nonapi.io.github.classgraph.json.Id;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 
 @EqualsAndHashCode
 public @Data abstract class Sensor implements MeasurementSensor {

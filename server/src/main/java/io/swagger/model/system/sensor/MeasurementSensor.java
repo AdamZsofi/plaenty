@@ -1,4 +1,4 @@
-package io.swagger.model.sensor;
+package io.swagger.model.system.sensor;
 
 public interface MeasurementSensor {
 	public double takeMeasurement();

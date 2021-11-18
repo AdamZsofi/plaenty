@@ -1,7 +1,7 @@
 package io.swagger.repository;
 
-import io.swagger.model.sensor.Sensor;
-import io.swagger.model.sensor.SensorData;
+import io.swagger.model.system.sensor.Sensor;
+import io.swagger.model.system.sensor.SensorData;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
