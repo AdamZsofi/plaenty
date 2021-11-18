@@ -117,7 +117,7 @@ public class HydroponicSystem {
 
 	public SystemState getSystemState() {
 		HashMap<Sensor, SensorData> allSensorData = new HashMap<>();
-		sensors.forEach((s -> allSensorData.put(s, sensorDataRepository.getLastMeasurement(s)));
+		sensors.forEach((s -> allSensorData.put(s, sensorDataRepository.getLastMeasurement(s))));
 		return new SystemState(activeConfiguration, allSensorData);
 	}
 
