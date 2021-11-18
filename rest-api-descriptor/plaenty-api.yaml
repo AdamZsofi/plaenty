@@ -179,6 +179,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/configuration'
+        "500":
+          description: "Internal error: server could not set active configuration"
   /configuration/{id}:
     get:
       tags:
@@ -194,7 +196,7 @@ paths:
           description: "configuration id"
       responses:
         "200":
-          description: "The active configuration of the system"
+          description: "The requested configuration of the system"
           content:
             application/json:
               schema:
@@ -219,6 +221,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/configuration'
+        "404":
+          description: "Configuration not found"
+        "500":
+          description: "Internal error: Could not update configuration"
   /configuration:
     post:
       tags:
@@ -236,6 +242,12 @@ paths:
       responses:
         "200":
           description: "Ok"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/configuration'
+        "500":
+          description: "Internal error: Could not add configuration"
   /configuration/list:
     get:
       tags:
