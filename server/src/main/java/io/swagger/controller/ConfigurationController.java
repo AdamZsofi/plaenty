@@ -1,7 +1,9 @@
 package io.swagger.controller;
 
+import io.swagger.configuration.ConfigurationNotFoundException;
 import io.swagger.model.configuration.Configuration;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.repository.ConfigurationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,25 +19,38 @@ import java.util.List;
 @RestController
 @RequestMapping("/configuration")
 public class ConfigurationController {
+	@Autowired
+	ConfigurationRepository configurationRepository;
+
 	@GetMapping("{id}")
 	public ResponseEntity<Configuration> configurationIdGet(@PathVariable Integer id) {
-		return null;
+		try {
+			return ResponseEntity.ok(configurationRepository.getConfiguration(id));
+		} catch (ConfigurationNotFoundException e) {
+			e.printStackTrace();
+			return ResponseEntity.notFound().build();
+		}
 	}
 
-	@PutMapping("{id}")
-	@SecurityRequirement(name = "oAuthSecurity")
-	public ResponseEntity<Configuration> configurationIdPut(@PathVariable Integer id) {
-		return null;
+	@PutMapping
+	// TODO add oauth
+	public ResponseEntity<Configuration> configurationIdPut(@Valid @RequestBody Configuration body) {
+		try {
+			return ResponseEntity.ok(configurationRepository.updateConfiguration(body));
+		} catch (ConfigurationNotFoundException e) {
+			e.printStackTrace();
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@GetMapping("/list")
 	public ResponseEntity<List<Configuration>> configurationListGet() {
-		return null;
+		return ResponseEntity.ok(configurationRepository.getConfigurationList());
 	}
 
 	@PostMapping
-	@SecurityRequirement(name = "oAuthSecurity")
-	public ResponseEntity<Void> configurationPost(@Valid @RequestBody Configuration body) {
-		return null;
+	// TODO add oauth
+	public ResponseEntity<Configuration> configurationPost(@Valid @RequestBody Configuration body) {
+		return ResponseEntity.ok(configurationRepository.saveConfiguration(body));
 	}
 }

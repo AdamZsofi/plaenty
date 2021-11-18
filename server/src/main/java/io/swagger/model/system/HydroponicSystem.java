@@ -1,5 +1,6 @@
 package io.swagger.model.system;
 
+import io.swagger.configuration.ConfigurationNotFoundException;
 import io.swagger.model.configuration.Configuration;
 import io.swagger.model.system.sensor.LightLevel;
 import io.swagger.model.system.actuator.Growlight;
@@ -133,8 +134,9 @@ public class HydroponicSystem {
 		}
 	}
 
-	public void updateActiveConfiguration(long configId) throws RuntimeException {
+	public Configuration updateActiveConfiguration(long configId) throws ConfigurationNotFoundException {
 		activeConfiguration = configurationRepository.getConfiguration(configId);
+		return activeConfiguration;
 	}
 
 	public Configuration getActiveConfiguration() {

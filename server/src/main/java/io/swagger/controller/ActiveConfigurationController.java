@@ -1,8 +1,8 @@
 package io.swagger.controller;
 
+import io.swagger.configuration.ConfigurationNotFoundException;
 import io.swagger.model.configuration.Configuration;
 import io.swagger.model.system.HydroponicSystem;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,13 +28,13 @@ public class ActiveConfigurationController {
 	}
 
 	// TODO how does oauth sec work?
-	@SecurityRequirement(name = "oAuthSecurity")
 	@PutMapping("{id}")
 	public ResponseEntity<Configuration> activeConfigurationIdPut(@PathVariable Integer id) {
 		try {
-			system.updateActiveConfiguration(id);
-		} catch (RuntimeException) {
-			ResponseEntity.
+			return ResponseEntity.ok(system.updateActiveConfiguration(id));
+		} catch (ConfigurationNotFoundException e) {
+			e.printStackTrace();
+			return ResponseEntity.notFound().build();
 		}
 	}
 }
