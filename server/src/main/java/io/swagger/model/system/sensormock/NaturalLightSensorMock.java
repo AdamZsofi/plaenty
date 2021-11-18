@@ -1,6 +1,9 @@
 package io.swagger.model.system.sensormock;
 
 import io.swagger.model.system.sensor.Sensor;
+import io.swagger.model.system.sensor.SensorData;
+
+import java.time.LocalDateTime;
 
 public class NaturalLightSensorMock extends Sensor {
 	public NaturalLightSensorMock(String name) {
@@ -8,12 +11,16 @@ public class NaturalLightSensorMock extends Sensor {
 	}
 
 	@Override
-	public double takeMeasurement() {
+	public SensorData takeMeasurement() {
 		// 30 000 - 100 000 - direct sunlight
 		// 10 000 lux - ambient daylight
 		// 1000 lux - overcast daylight
 		// 400 lux - sunset/sunrise
 		// 0.01 - 1 lux - night (moonlight)
-		return Math.random()*100000.0;
+		SensorData sensorData = new SensorData();
+		sensorData.setSensorId(this.sensorId);
+		sensorData.setValue(Math.random()*100000.0);
+		sensorData.setTime(LocalDateTime.now());
+		return sensorData;
 	}
 }

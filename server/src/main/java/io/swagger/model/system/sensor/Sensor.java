@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode
 public @Data abstract class Sensor implements MeasurementSensor {
 	private static long nextId = 0;
-	private long sensorId;
+	protected long sensorId;
 	private String name;
 	private String dimension;
 

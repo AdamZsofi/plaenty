@@ -9,12 +9,11 @@ import java.time.LocalDateTime;
 /**
  * A single measurement taken by a given sensor
  */
-public @Data
-class SensorData {
+public @Data class SensorData {
 	@javax.persistence.Id
 	@Id
 	@GeneratedValue
-	private long measurementId;
+	private Long measurementId = null;
 	private double value;
 	private LocalDateTime time;
 	private long sensorId;

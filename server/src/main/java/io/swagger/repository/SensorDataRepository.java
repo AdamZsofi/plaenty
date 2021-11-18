@@ -38,9 +38,9 @@ public class SensorDataRepository {
 				.getResultList();
 	}
 
-	public List<SensorData> getLastMeasurement(Sensor sensor) {
+	public SensorData getLastMeasurement(Sensor sensor) {
 		return em.createQuery("SELECT data from SensorData WHERE data.sensorId = ?1 AND ROWNUM = 1 ORDER BY data.time", SensorData.class)
 				.setParameter(1, sensor.getSensorId())
-				.getResultList();
+				.getSingleResult();
 	}
 }

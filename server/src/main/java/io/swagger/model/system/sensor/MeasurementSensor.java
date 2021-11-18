@@ -1,5 +1,5 @@
 package io.swagger.model.system.sensor;
 
 public interface MeasurementSensor {
-	public double takeMeasurement();
+	public SensorData takeMeasurement() throws RuntimeException;
 }

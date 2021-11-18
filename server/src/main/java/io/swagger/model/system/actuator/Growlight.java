@@ -14,7 +14,7 @@ public class Growlight implements Controller {
 	private final LocalTime sunset;
 	private final LocalTime sunrise;
 
-	Growlight(LocalTime sunset, LocalTime sunrise) {
+	public Growlight(LocalTime sunset, LocalTime sunrise) {
 		this.sunset = sunset;
 		this.sunrise = sunrise;
 	}
