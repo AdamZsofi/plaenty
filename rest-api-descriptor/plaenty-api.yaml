@@ -81,6 +81,10 @@ components:
                 $ref: '#/components/schemas/sensor'
               data:
                 $ref: '#/components/schemas/sensordata'
+        pumpState:
+            type: boolean
+        lightState:
+            type: boolean
 paths:
   /dashboard:
     get:
