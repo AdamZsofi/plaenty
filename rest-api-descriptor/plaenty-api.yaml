@@ -129,6 +129,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/sensordatalist'
+        "404":
+          description: "Sensor not found"
   /sensor/list/:
     get:
       tags:
@@ -179,6 +181,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/configuration'
+        "404":
+          description: "Configuration not found"
         "500":
           description: "Internal error: server could not set active configuration"
   /configuration/{id}:
@@ -201,6 +205,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/configuration'
+        "404":
+          description: "Configuration not found"
     put:
       tags:
       - "configuration"
