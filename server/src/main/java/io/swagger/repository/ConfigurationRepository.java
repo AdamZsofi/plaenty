@@ -25,4 +25,14 @@ public class ConfigurationRepository {
 			return saveConfiguration(config);
 		}
 	}
+
+	@Transactional
+	public Configuration getConfiguration(long configId) {
+		Configuration existingConfig = em.find(Configuration.class, configId);
+		if(existingConfig==null) {
+			throw new RuntimeException("Configuration requested was not found");
+		} else {
+			return existingConfig;
+		}
+	}
 }

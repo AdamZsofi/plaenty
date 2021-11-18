@@ -5,6 +5,7 @@ import io.swagger.model.system.sensor.LightLevel;
 import io.swagger.model.system.actuator.Growlight;
 import io.swagger.model.system.actuator.Pump;
 import io.swagger.model.system.sensor.Sensor;
+import io.swagger.model.system.sensor.SensorContainer;
 import io.swagger.model.system.sensor.SensorData;
 import io.swagger.model.system.sensormock.EcSensorMock;
 import io.swagger.model.system.sensormock.NaturalLightSensorMock;
@@ -12,6 +13,7 @@ import io.swagger.model.system.sensormock.PhSensorMock;
 import io.swagger.repository.ConfigurationRepository;
 import io.swagger.repository.SensorDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -23,6 +25,8 @@ import java.util.TimerTask;
 /**
  * A singleton class holding the configuration (sensors and actuators) of the system
  */
+// TODO add configurations and persistent DBs
+@Component
 public class HydroponicSystem {
 	@Autowired
 	private SensorDataRepository sensorDataRepository;
@@ -30,7 +34,9 @@ public class HydroponicSystem {
 	@Autowired
 	private ConfigurationRepository configurationRepository;
 
-	private final Set<Sensor> sensors = new HashSet<>();
+	@Autowired
+	SensorContainer sensors;
+
 	Growlight growlight;
 	Pump pump;
 	Sensor lightSensor;
@@ -39,12 +45,6 @@ public class HydroponicSystem {
 	private Timer pumpOnTimer;
 	private Timer pumpOffTimer;
 	private Timer sensorTimer;
-
-	private static final HydroponicSystem instance = new HydroponicSystem();
-
-	public HydroponicSystem getInstance() {
-		return instance;
-	}
 
 	private HydroponicSystem() {
 		sensors.add(new PhSensorMock("mock pH sensor"));
@@ -117,12 +117,12 @@ public class HydroponicSystem {
 
 	public SystemState getSystemState() {
 		HashMap<Sensor, SensorData> allSensorData = new HashMap<>();
-		sensors.forEach((s -> allSensorData.put(s, sensorDataRepository.getLastMeasurement(s))));
-		return new SystemState(activeConfiguration, allSensorData);
+		sensors.getSensorList().forEach((s -> allSensorData.put(s, sensorDataRepository.getLastMeasurement(s))));
+		return new SystemState(activeConfiguration, allSensorData, pump.isActuatorOn(), growlight.isActuatorOn());
 	}
 
 	public void updateSensors() {
-		for (Sensor sensor : sensors) {
+		for (Sensor sensor : sensors.getSensorList()) {
 			sensorDataRepository.saveMeasurement(sensor.takeMeasurement());
 		}
 
@@ -131,5 +131,13 @@ public class HydroponicSystem {
 		} else {
 			growlight.turnActuatorOff();
 		}
+	}
+
+	public void updateActiveConfiguration(long configId) throws RuntimeException {
+		activeConfiguration = configurationRepository.getConfiguration(configId);
+	}
+
+	public Configuration getActiveConfiguration() {
+		return activeConfiguration;
 	}
 }

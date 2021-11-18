@@ -13,11 +13,13 @@ public class Pump implements Controller {
 	}
 
 	@Override
+	// TODO add logs
 	public void turnActuatorOn() {
 		isOn = true;
 	}
 
 	@Override
+	// TODO add logs
 	public void turnActuatorOff() {
 		isOn = false;
 	}

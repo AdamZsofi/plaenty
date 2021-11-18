@@ -25,6 +25,7 @@ public class Growlight implements Controller {
 	}
 
 	@Override
+	// TODO add logs
 	public void turnActuatorOn() {
 		LocalTime now = LocalTime.now();
 		if(now.isBefore(sunset) && now.isAfter(sunrise)) {
@@ -33,6 +34,7 @@ public class Growlight implements Controller {
 	}
 
 	@Override
+	// TODO add logs
 	public void turnActuatorOff() {
 		isOn = false;
 	}

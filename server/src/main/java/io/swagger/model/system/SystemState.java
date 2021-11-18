@@ -7,10 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @AllArgsConstructor
-@Data final class SystemState {
+public @Data final class SystemState {
 	private final Configuration activeConfiguration;
 	private final HashMap<Sensor, SensorData> sensorState;
+	boolean isPumpOn;
+	boolean isGrowlightOn;
 }
