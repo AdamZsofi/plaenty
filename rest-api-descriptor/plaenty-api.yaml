@@ -207,6 +207,29 @@ paths:
                 $ref: '#/components/schemas/configuration'
         "404":
           description: "Configuration not found"
+  /configuration:
+    post:
+      tags:
+      - "configuration"
+      summary: "Add a new configuration"
+      description: "Adds a new configuration and returns the newly added configuration in the response"
+      security:
+      - oAuthSecurity: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/configuration"
+      responses:
+        "200":
+          description: "Ok"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/configuration'
+        "500":
+          description: "Internal error: Could not add configuration"
     put:
       tags:
       - "configuration"
@@ -231,29 +254,6 @@ paths:
           description: "Configuration not found"
         "500":
           description: "Internal error: Could not update configuration"
-  /configuration:
-    post:
-      tags:
-      - "configuration"
-      summary: "Add a new configuration"
-      description: "Adds a new configuration and returns the newly added configuration in the response"
-      security:
-      - oAuthSecurity: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/configuration"
-      responses:
-        "200":
-          description: "Ok"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/configuration'
-        "500":
-          description: "Internal error: Could not add configuration"
   /configuration/list:
     get:
       tags:
