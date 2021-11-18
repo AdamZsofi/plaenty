@@ -1,4 +1,4 @@
-package io.swagger.model;
+package io.swagger.model.sensor;
 
 import lombok.Data;
 import nonapi.io.github.classgraph.json.Id;

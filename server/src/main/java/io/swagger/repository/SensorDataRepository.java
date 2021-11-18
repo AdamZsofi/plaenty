@@ -1,7 +1,7 @@
 package io.swagger.repository;
 
-import io.swagger.model.Sensor;
-import io.swagger.model.SensorData;
+import io.swagger.model.sensor.Sensor;
+import io.swagger.model.sensor.SensorData;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +34,12 @@ public class SensorDataRepository {
 
 	public List<SensorData> getSensorData(Sensor sensor) {
 		return em.createQuery("SELECT data FROM SensorData WHERE data.sensorId = ?1", SensorData.class)
+				.setParameter(1, sensor.getSensorId())
+				.getResultList();
+	}
+
+	public List<SensorData> getLastMeasurement(Sensor sensor) {
+		return em.createQuery("SELECT data from SensorData WHERE data.sensorId = ?1 AND ROWNUM = 1 ORDER BY data.time", SensorData.class)
 				.setParameter(1, sensor.getSensorId())
 				.getResultList();
 	}

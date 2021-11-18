@@ -1,6 +1,6 @@
 package io.swagger.repository;
 
-import io.swagger.model.Configuration;
+import io.swagger.model.configuration.Configuration;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
