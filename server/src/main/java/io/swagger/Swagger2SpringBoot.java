@@ -1,7 +1,7 @@
 package io.swagger;
 
-import io.swagger.configuration.LocalDateConverter;
-import io.swagger.configuration.LocalDateTimeConverter;
+import plaentyapp.configuration.LocalDateConverter;
+import plaentyapp.configuration.LocalDateTimeConverter;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
@@ -17,7 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @SpringBootApplication
 @EnableOpenApi
-@ComponentScan(basePackages = { "io.swagger", "io.swagger.api" , "io.swagger.configuration"})
+@ComponentScan(basePackages = { "io.swagger", "io.swagger.api" , "configuration.configuration"})
 public class Swagger2SpringBoot implements CommandLineRunner {
 
     @Override
