@@ -1,5 +1,6 @@
 package plaentyapp.repository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import plaentyapp.model.configuration.ConfigurationNotFoundException;
 import plaentyapp.model.configuration.Configuration;
 import org.springframework.stereotype.Repository;
@@ -19,6 +20,7 @@ public class ConfigurationRepository {
 		return em.merge(config);
 	}
 
+	@Transactional
 	public Configuration updateConfiguration(Configuration config) throws ConfigurationNotFoundException {
 		Configuration existingConfig = em.find(Configuration.class, config.getId());
 		if(existingConfig==null) {
@@ -38,8 +40,9 @@ public class ConfigurationRepository {
 		}
 	}
 
+	@Transactional
 	public List<Configuration> getConfigurationList() {
-		return em.createQuery("SELECT c FROM Configuration", Configuration.class)
+		return em.createQuery("SELECT c FROM Configuration c", Configuration.class)
 				.getResultList();
 	}
 }

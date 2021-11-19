@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/active-configuration")
 public class ActiveConfigurationController {
 	@Autowired
-	HydroponicSystem system;
+	HydroponicSystem hydroponicSystem;
 
 	@GetMapping
 	public ResponseEntity<Configuration> activeConfiguration() {
-		Configuration activeConfiguration = system.getActiveConfiguration();
+		Configuration activeConfiguration = hydroponicSystem.getActiveConfiguration();
 		if(activeConfiguration==null) {
 			return ResponseEntity.notFound().build();
 		} else {
@@ -31,7 +31,7 @@ public class ActiveConfigurationController {
 	@PutMapping("{id}")
 	public ResponseEntity<Configuration> activeConfigurationIdPut(@PathVariable Integer id) {
 		try {
-			return ResponseEntity.ok(system.updateActiveConfiguration(id));
+			return ResponseEntity.ok(hydroponicSystem.updateActiveConfiguration(id));
 		} catch (ConfigurationNotFoundException e) {
 			e.printStackTrace();
 			return ResponseEntity.notFound().build();

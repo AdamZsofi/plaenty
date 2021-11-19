@@ -21,26 +21,31 @@ public class SensorDataRepository {
 		return em.merge(data);
 	}
 
+	@Transactional
 	public List<SensorData> getSensorData(Sensor sensor, LocalDateTime from) throws RuntimeException {
 		LocalDateTime now = LocalDateTime.now();
 		if(from.isAfter(now)) {
 			throw new RuntimeException("Interval for sensor data did not pass yet");
 		}
-		return em.createQuery("SELECT data FROM SensorData WHERE data.time >= ?1 AND data.sensorId = ?2", SensorData.class)
+		return em.createQuery("SELECT data FROM SensorData data WHERE data.time >= ?1 AND data.sensorId = ?2", SensorData.class)
 				.setParameter(1, from)
 				.setParameter(2, sensor.getSensorId())
 				.getResultList();
 	}
 
+	@Transactional
 	public List<SensorData> getSensorData(Sensor sensor) {
-		return em.createQuery("SELECT data FROM SensorData WHERE data.sensorId = ?1", SensorData.class)
+		return em.createQuery("SELECT data FROM SensorData data WHERE data.sensorId = ?1", SensorData.class)
 				.setParameter(1, sensor.getSensorId())
 				.getResultList();
 	}
 
+	@Transactional
 	public SensorData getLastMeasurement(Sensor sensor) {
-		return em.createQuery("SELECT data from SensorData WHERE data.sensorId = ?1 AND ROWNUM = 1 ORDER BY data.time", SensorData.class)
+		return em.createQuery("SELECT data from SensorData data WHERE data.sensorId = ?1 ORDER BY data.time", SensorData.class)
 				.setParameter(1, sensor.getSensorId())
-				.getSingleResult();
+				.setMaxResults(1)
+				.getResultList()
+				.get(0);
 	}
 }

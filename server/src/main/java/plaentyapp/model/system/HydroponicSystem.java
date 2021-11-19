@@ -1,5 +1,7 @@
 package plaentyapp.model.system;
 
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.scheduling.annotation.Scheduled;
 import plaentyapp.model.configuration.ConfigurationNotFoundException;
 import plaentyapp.model.configuration.Configuration;
 import plaentyapp.model.system.actuator.Growlight;
@@ -16,6 +18,7 @@ import plaentyapp.repository.SensorDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Timer;
@@ -29,30 +32,30 @@ import java.util.TimerTask;
 public class HydroponicSystem {
 	@Autowired
 	private SensorDataRepository sensorDataRepository;
-
 	@Autowired
 	private ConfigurationRepository configurationRepository;
-
 	@Autowired
-	SensorContainer sensors;
+	private SensorContainer sensors;
 
-	Growlight growlight;
-	Pump pump;
-	Sensor lightSensor;
+	private final Growlight growlight;
+	private final Pump pump;
+	private final Sensor lightSensor;
 	private Configuration activeConfiguration;
 
 	private Timer pumpOnTimer;
 	private Timer pumpOffTimer;
-	private Timer sensorTimer;
 
 	private HydroponicSystem() {
-		sensors.add(new PhSensorMock("mock pH sensor"));
-		sensors.add(new EcSensorMock("mock EC sensor"));
 		lightSensor = new NaturalLightSensorMock("mock light sensor");
-		sensors.add(lightSensor);
-
 		pump = new Pump();
 		growlight = new Growlight(LocalTime.of(7, 0), LocalTime.of(18, 0));
+	}
+
+	@PostConstruct
+	private void initializeSystem() {
+		sensors.add(new PhSensorMock("mock pH sensor"));
+		sensors.add(new EcSensorMock("mock EC sensor"));
+		sensors.add(lightSensor);
 
 		// TODO add default active configuration from repository, don't create it here
 		Configuration defaultConfig = new Configuration();
@@ -67,22 +70,10 @@ public class HydroponicSystem {
 		activeConfiguration = configurationRepository.saveConfiguration(defaultConfig);
 
 		startPumpCycle();
-		startSensorCycle();
+		// startSensorCycle();
 	}
 
-	private void startSensorCycle() {
-		if(sensorTimer!=null) {
-			sensorTimer.cancel();
-			sensorTimer = new Timer();
-			sensorTimer.scheduleAtFixedRate(new TimerTask() {
-				@Override
-				public void run() {
-					updateSensors();
-				}
-			}, 0, 5*60000);
-		}
-	}
-
+	// not scheduled, as that cannot change the rates at runtime :c
 	private void startPumpCycle() {
 		if(pumpOnTimer!=null) {
 			pumpOnTimer.cancel();
@@ -120,6 +111,7 @@ public class HydroponicSystem {
 		return new SystemState(activeConfiguration, allSensorData, pump.isActuatorOn(), growlight.isActuatorOn());
 	}
 
+	@Scheduled(fixedRate=5*60000)
 	public void updateSensors() {
 		for (Sensor sensor : sensors.getSensorList()) {
 			sensorDataRepository.saveMeasurement(sensor.takeMeasurement());

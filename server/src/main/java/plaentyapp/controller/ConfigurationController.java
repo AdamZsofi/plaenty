@@ -51,6 +51,7 @@ public class ConfigurationController {
 	@PostMapping
 	// TODO add oauth
 	public ResponseEntity<Configuration> configurationPost(@Valid @RequestBody Configuration body) {
+		body.setId(null);
 		return ResponseEntity.ok(configurationRepository.saveConfiguration(body));
 	}
 }

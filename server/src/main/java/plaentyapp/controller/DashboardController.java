@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/dashboard")
 public class DashboardController {
 	@Autowired
-	HydroponicSystem system;
+	HydroponicSystem hydroponicSystem;
 
 	@GetMapping
 	public ResponseEntity<SystemState> sendDashboardData() {
-		return ResponseEntity.ok(system.getSystemState());
+		return ResponseEntity.ok(hydroponicSystem.getSystemState());
 	}
 }
