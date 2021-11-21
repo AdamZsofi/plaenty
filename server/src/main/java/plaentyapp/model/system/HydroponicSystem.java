@@ -61,6 +61,7 @@ public class HydroponicSystem {
 		sensors.add(lightSensor);
 
 		// TODO add default active configuration from repository, don't create it here
+		/*
 		Configuration defaultConfig = new Configuration();
 		defaultConfig.setName("generic configuration");
 		defaultConfig.setEcmin(0.8);
@@ -71,7 +72,9 @@ public class HydroponicSystem {
 		defaultConfig.setPumpoff(120);
 		defaultConfig.setPumpon(5);
 		activeConfiguration = configurationRepository.saveConfiguration(defaultConfig);
+		*/
 
+		activeConfiguration = configurationRepository.getConfiguration(1);
 		startPumpCycle();
 	}
 
