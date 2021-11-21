@@ -19,6 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Timer;
@@ -70,7 +73,6 @@ public class HydroponicSystem {
 		activeConfiguration = configurationRepository.saveConfiguration(defaultConfig);
 
 		startPumpCycle();
-		// startSensorCycle();
 	}
 
 	// not scheduled, as that cannot change the rates at runtime :c

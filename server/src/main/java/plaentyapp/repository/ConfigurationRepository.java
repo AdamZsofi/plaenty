@@ -6,8 +6,11 @@ import plaentyapp.model.configuration.Configuration;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PreDestroy;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Repository
