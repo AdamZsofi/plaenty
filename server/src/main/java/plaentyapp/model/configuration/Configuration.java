@@ -12,6 +12,7 @@ public @Data class Configuration {
 	@Id
 	@GeneratedValue
 	private Long id = null;
+	private String author;
 	private String name;
 	private double ecmin;
 	private double ecmax;

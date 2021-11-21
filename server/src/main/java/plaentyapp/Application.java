@@ -24,21 +24,24 @@ public class Application extends WebSecurityConfigurerAdapter implements Command
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// TODO
-		// .antMatchers(HttpMethod.GET, "/user/*")
-		http
+		// TODO rendbetenni, user, stb.
+		http.csrf().disable()
 			.authorizeRequests()
-				.antMatchers(HttpMethod.POST, "/configuration*")
-				.authenticated().and()
+				.antMatchers(HttpMethod.POST, "/configuration")
+				//.authenticated().and()
+				.permitAll().and()
 			.authorizeRequests()
-				.antMatchers(HttpMethod.PUT, "/configuration*")
-				.authenticated().and()
+				.antMatchers(HttpMethod.PUT, "/configuration**")
+				//.authenticated().and()
+				.permitAll().and()
 			.authorizeRequests()
-				.antMatchers(HttpMethod.PUT, "/active-configuration*")
-				.authenticated().and()
+				.antMatchers(HttpMethod.PUT, "/active-configuration**")
+				//.authenticated().and()
+				.permitAll().and()
 			.authorizeRequests()
-				.antMatchers(HttpMethod.GET, "/user*")
-				.authenticated().and()
+				.antMatchers(HttpMethod.GET, "/user")
+				//.authenticated().and()
+				.permitAll().and()
 			.authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/login/*", "/error/*", "/configuration/*", "/sensor/*", "/active-configuration/*", "/dashboard*")
 				.permitAll().and()

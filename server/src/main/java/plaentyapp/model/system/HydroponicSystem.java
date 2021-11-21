@@ -63,6 +63,7 @@ public class HydroponicSystem {
 		// TODO add default active configuration from repository, don't create it here
 		/*
 		Configuration defaultConfig = new Configuration();
+		defaultConfig.setAuthor("plaenty");
 		defaultConfig.setName("generic configuration");
 		defaultConfig.setEcmin(0.8);
 		defaultConfig.setEcmin(1.3);
