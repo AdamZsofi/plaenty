@@ -21,6 +21,8 @@ components:
           type: integer
         name:
           type: string
+        author:
+          type: string
         ecmin:
           type: string
           format: double
@@ -267,3 +269,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/configuration'
+  /user:
+    get:
+      tags:
+      - "login"
+      summary: "Returns the name of the authenticated user"
+      security:
+      - oAuthSecurity: []
+      requestBody:
+        required: true
+      responses:
+        "200":
+          description: "Ok"
+          content:
+            type: string            
+        "403":
+          description: "Forbidden" # not authorized
