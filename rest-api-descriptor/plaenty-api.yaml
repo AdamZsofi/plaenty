@@ -21,6 +21,8 @@ components:
           type: integer
         name:
           type: string
+        author:
+          type: string
         ecmin:
           type: string
           format: double
