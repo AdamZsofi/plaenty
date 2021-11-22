@@ -60,21 +60,6 @@ public class HydroponicSystem {
 		sensors.add(new EcSensorMock("mock EC sensor"));
 		sensors.add(lightSensor);
 
-		// TODO add default active configuration from repository, don't create it here
-		/*
-		Configuration defaultConfig = new Configuration();
-		defaultConfig.setAuthor("plaenty");
-		defaultConfig.setName("generic configuration");
-		defaultConfig.setEcmin(0.8);
-		defaultConfig.setEcmin(1.3);
-		defaultConfig.setPhmax(6.5);
-		defaultConfig.setPhmin(5.5);
-		defaultConfig.setLightRequired(LightLevel.NORMAL);
-		defaultConfig.setPumpoff(120);
-		defaultConfig.setPumpon(5);
-		activeConfiguration = configurationRepository.saveConfiguration(defaultConfig);
-		*/
-
 		activeConfiguration = configurationRepository.getConfiguration(1);
 		startPumpCycle();
 	}
