@@ -20,8 +20,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -145,5 +147,33 @@ public class HydroponicSystem {
 		growlight.turnActuatorOff();
 		pump.turnActuatorOff();
 		logger.info("Actuators turned off successfully");
+	}
+
+	public Configuration updateConfiguration(Configuration updatedConfig) {
+		return configurationRepository.updateConfiguration(updatedConfig);
+	}
+
+	public Configuration getConfiguration(Integer id) {
+		return configurationRepository.getConfiguration(id);
+	}
+
+	public Configuration saveConfiguration(Configuration newConfiguration) {
+		return configurationRepository.saveConfiguration(newConfiguration);
+	}
+
+	public List<Configuration> getConfigurationList() {
+		return configurationRepository.getConfigurationList();
+	}
+
+	public List<SensorData> getSensorData(Integer sensorid, LocalDateTime from) {
+		return sensorDataRepository.getSensorData(sensors.getSensorById(sensorid), from);
+	}
+
+	public List<SensorData> getSensorData(Integer sensorid) {
+		return sensorDataRepository.getSensorData(sensors.getSensorById(sensorid));
+	}
+
+	public List<Sensor> getSensorList() {
+		return sensors.getSensorList();
 	}
 }

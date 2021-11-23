@@ -1,6 +1,7 @@
 package plaentyapp.controller;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import plaentyapp.model.system.HydroponicSystem;
 import plaentyapp.model.system.sensor.Sensor;
 import plaentyapp.model.system.sensor.SensorContainer;
 import plaentyapp.model.system.sensor.SensorData;
@@ -21,24 +22,21 @@ import java.util.List;
 @RequestMapping("/sensor")
 public class SensorController {
 	@Autowired
-	SensorDataRepository sensorDataRepository;
-
-	@Autowired
-	SensorContainer sensors;
+	HydroponicSystem system;
 
 	@GetMapping("/data/{sensorid}")
 	public ResponseEntity<List<SensorData>> sendSensorData(@PathVariable Integer sensorid, @Valid @RequestParam(value = "from", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from) {
 		List<SensorData> sensorData;
 		if(from!=null) {
-			sensorData = sensorDataRepository.getSensorData(sensors.getSensorById(sensorid), from);
+			sensorData = system.getSensorData(sensorid, from);
 		} else {
-			sensorData = sensorDataRepository.getSensorData(sensors.getSensorById(sensorid));
+			sensorData = system.getSensorData(sensorid);
 		}
 		return ResponseEntity.ok(sensorData);
 	}
 
 	@GetMapping("/list")
 	public ResponseEntity<List<Sensor>> sendSensorList() {
-		return ResponseEntity.ok(sensors.getSensorList());
+		return ResponseEntity.ok(system.getSensorList());
 	}
 }
