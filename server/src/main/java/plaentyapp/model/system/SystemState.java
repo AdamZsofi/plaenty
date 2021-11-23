@@ -11,7 +11,7 @@ import java.util.HashMap;
 @AllArgsConstructor
 public @Data final class SystemState {
 	private final Configuration activeConfiguration;
-	private final HashMap<Sensor, SensorData> sensorState;
+	private final HashMap<Long, SensorData> sensorState;
 	boolean isPumpOn;
 	boolean isGrowlightOn;
 }
