@@ -105,8 +105,8 @@ public class HydroponicSystem {
 
 	public SystemState getSystemState() {
 		logger.info("Fetching system state...");
-		HashMap<Sensor, SensorData> allSensorData = new HashMap<>();
-		sensors.getSensorList().forEach((s -> allSensorData.put(s, sensorDataRepository.getLastMeasurement(s))));
+		HashMap<Long, SensorData> allSensorData = new HashMap<>();
+		sensors.getSensorList().forEach((s -> allSensorData.put(s.getSensorId(), sensorDataRepository.getLastMeasurement(s))));
 		return new SystemState(activeConfiguration, allSensorData, pump.isActuatorOn(), growlight.isActuatorOn());
 	}
 
