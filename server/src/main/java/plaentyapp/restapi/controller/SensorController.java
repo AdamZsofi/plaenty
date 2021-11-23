@@ -1,11 +1,9 @@
-package plaentyapp.controller;
+package plaentyapp.restapi.controller;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import plaentyapp.model.system.HydroponicSystem;
-import plaentyapp.model.system.sensor.Sensor;
-import plaentyapp.model.system.sensor.SensorContainer;
-import plaentyapp.model.system.sensor.SensorData;
-import plaentyapp.repository.SensorDataRepository;
+import plaentyapp.model.io.sensor.Sensor;
+import plaentyapp.model.io.sensor.SensorData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

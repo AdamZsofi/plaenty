@@ -1,10 +1,12 @@
-package plaentyapp.model.system.actuator;
+package plaentyapp.model.io.actuator.actuatormock;
+
+import plaentyapp.model.io.actuator.Actuator;
 
 /**
  * A pump, which can be turned on and off
  * There is no real pump added, so it is mocked
  */
-public class Pump implements Controller {
+public class Pump implements Actuator {
 	private boolean isOn = false;
 
 	@Override

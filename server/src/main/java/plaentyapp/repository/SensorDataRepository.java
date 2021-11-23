@@ -1,7 +1,7 @@
 package plaentyapp.repository;
 
-import plaentyapp.model.system.sensor.Sensor;
-import plaentyapp.model.system.sensor.SensorData;
+import plaentyapp.model.io.sensor.Sensor;
+import plaentyapp.model.io.sensor.SensorData;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

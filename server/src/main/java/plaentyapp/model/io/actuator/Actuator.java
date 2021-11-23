@@ -1,6 +1,6 @@
-package plaentyapp.model.system.actuator;
+package plaentyapp.model.io.actuator;
 
-public interface Controller {
+public interface Actuator {
 	public boolean isActuatorOn();
 	public void turnActuatorOn() throws RuntimeException;
 	public void turnActuatorOff() throws RuntimeException;

@@ -1,9 +1,8 @@
-package plaentyapp.controller;
+package plaentyapp.restapi.controller;
 
 import plaentyapp.model.configuration.ConfigurationNotFoundException;
 import plaentyapp.model.configuration.Configuration;
 import plaentyapp.model.system.HydroponicSystem;
-import plaentyapp.repository.ConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

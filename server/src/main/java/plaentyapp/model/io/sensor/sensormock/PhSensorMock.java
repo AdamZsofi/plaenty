@@ -1,7 +1,7 @@
-package plaentyapp.model.system.sensormock;
+package plaentyapp.model.io.sensor.sensormock;
 
-import plaentyapp.model.system.sensor.Sensor;
-import plaentyapp.model.system.sensor.SensorData;
+import plaentyapp.model.io.sensor.Sensor;
+import plaentyapp.model.io.sensor.SensorData;
 
 import java.time.LocalDateTime;
 
