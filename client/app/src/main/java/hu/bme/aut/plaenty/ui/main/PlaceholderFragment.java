@@ -12,8 +12,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import hu.bme.aut.plaenty.R;
 import hu.bme.aut.plaenty.databinding.FragmentMainBinding;
+import hu.bme.aut.plaenty.model.SystemState;
+import hu.bme.aut.plaenty.network.NetworkManager;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -24,6 +31,7 @@ public class PlaceholderFragment extends Fragment {
 
     private PageViewModel pageViewModel;
     private FragmentMainBinding binding;
+
 
     public static PlaceholderFragment newInstance(int index) {
         PlaceholderFragment fragment = new PlaceholderFragment();
@@ -59,6 +67,21 @@ public class PlaceholderFragment extends Fragment {
                 textView.setText(s);
             }
         });
+
+        NetworkManager.getInstance().getDashboardAPI().getDashboardData().enqueue(
+                new Callback<SystemState>() {
+                    @Override
+                    public void onResponse(Call<SystemState> call, Response<SystemState> response) {
+                        textView.setText(response.body().getActiveConfiguration().getName());
+                    }
+
+                    @Override
+                    public void onFailure(Call<SystemState> call, Throwable t) {
+                        textView.setText(t.getMessage());
+                    }
+                }
+        );
+
         return root;
     }
 

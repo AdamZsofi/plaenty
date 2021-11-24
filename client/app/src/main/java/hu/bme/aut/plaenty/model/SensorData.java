@@ -11,6 +11,6 @@ import java.time.LocalDateTime;
 public @Data class SensorData {
 	private Long measurementId = null;
 	private double value;
-	private LocalDateTime time;
+	private String time;
 	private long sensorId;
 }

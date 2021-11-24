@@ -1,9 +1,18 @@
 package hu.bme.aut.plaenty.network;
 
+import android.accounts.NetworkErrorException;
+
+import java.util.function.Consumer;
+
 import hu.bme.aut.plaenty.api.ActiveConfigurationAPI;
+import hu.bme.aut.plaenty.api.ConfigAPI;
 import hu.bme.aut.plaenty.api.DashboardAPI;
+import hu.bme.aut.plaenty.api.SensorsAPI;
 import lombok.Getter;
 import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -23,10 +32,10 @@ public class NetworkManager {
 
     private Retrofit retrofit;
 
-    @Getter
-    private ActiveConfigurationAPI activeConfigurationAPI;
-    @Getter
-    private DashboardAPI dashboardAPI;
+    @Getter private ActiveConfigurationAPI activeConfigurationAPI;
+    @Getter private DashboardAPI dashboardAPI;
+    @Getter private SensorsAPI sensorsAPI;
+    @Getter private ConfigAPI configAPI;
 
     private NetworkManager() {
         retrofit = new Retrofit.Builder()
@@ -36,6 +45,22 @@ public class NetworkManager {
                 .build();
         activeConfigurationAPI = retrofit.create(ActiveConfigurationAPI.class);
         dashboardAPI = retrofit.create(DashboardAPI.class);
+        sensorsAPI = retrofit.create(SensorsAPI.class);
+        configAPI = retrofit.create(ConfigAPI.class);
+    }
+
+    public static <T> void callApi(Call<T> call, Consumer<T> consumer){
+        call.enqueue(new Callback<T>() {
+            @Override
+            public void onResponse(Call<T> call, Response<T> response) {
+                consumer.accept(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<T> call, Throwable t) {
+
+            }
+        });
     }
 
 
