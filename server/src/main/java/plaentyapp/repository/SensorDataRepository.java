@@ -42,7 +42,7 @@ public class SensorDataRepository {
 
 	@Transactional
 	public SensorData getLastMeasurement(Sensor sensor) {
-		return em.createQuery("SELECT data from SensorData data WHERE data.sensorId = ?1 ORDER BY data.time", SensorData.class)
+		return em.createQuery("SELECT data from SensorData data WHERE data.sensorId = ?1 ORDER BY data.time DESC", SensorData.class)
 				.setParameter(1, sensor.getSensorId())
 				.setMaxResults(1)
 				.getResultList()
