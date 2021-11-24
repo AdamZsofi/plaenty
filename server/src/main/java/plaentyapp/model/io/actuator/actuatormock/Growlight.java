@@ -1,4 +1,6 @@
-package plaentyapp.model.system.actuator;
+package plaentyapp.model.io.actuator.actuatormock;
+
+import plaentyapp.model.io.actuator.Actuator;
 
 import java.time.LocalTime;
 
@@ -7,7 +9,7 @@ import java.time.LocalTime;
  * It won't turn on at nighttime. It can always be turned off.
  * There is no real light added, so it is mocked
  */
-public class Growlight implements Controller {
+public class Growlight implements Actuator {
 	private boolean isOn = false;
 	private final LocalTime sunset;
 	private final LocalTime sunrise;

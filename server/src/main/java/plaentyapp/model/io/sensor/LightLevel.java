@@ -1,4 +1,4 @@
-package plaentyapp.model.system.sensor;
+package plaentyapp.model.io.sensor;
 
 /**
  * 	Light values converted from lux to three levels

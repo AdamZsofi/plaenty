@@ -1,4 +1,4 @@
-package plaentyapp.controller;
+package plaentyapp.restapi.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

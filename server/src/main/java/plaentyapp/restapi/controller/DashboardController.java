@@ -1,4 +1,4 @@
-package plaentyapp.controller;
+package plaentyapp.restapi.controller;
 
 import plaentyapp.model.system.HydroponicSystem;
 import plaentyapp.model.system.SystemState;
