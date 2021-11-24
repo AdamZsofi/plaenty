@@ -1,4 +1,4 @@
-package plaentyapp.model.system.sensor;
+package plaentyapp.model.io.sensor;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -1,4 +1,4 @@
-package plaentyapp.controller;
+package plaentyapp.restapi.controller;
 
 import plaentyapp.model.configuration.ConfigurationNotFoundException;
 import plaentyapp.model.configuration.Configuration;

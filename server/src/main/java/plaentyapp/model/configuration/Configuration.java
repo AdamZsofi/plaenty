@@ -1,6 +1,6 @@
 package plaentyapp.model.configuration;
 
-import plaentyapp.model.system.sensor.LightLevel;
+import plaentyapp.model.io.sensor.LightLevel;
 import lombok.Data;
 
 import javax.persistence.Entity;

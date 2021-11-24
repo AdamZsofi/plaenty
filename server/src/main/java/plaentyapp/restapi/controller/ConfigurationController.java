@@ -1,8 +1,8 @@
-package plaentyapp.controller;
+package plaentyapp.restapi.controller;
 
 import plaentyapp.model.configuration.ConfigurationNotFoundException;
 import plaentyapp.model.configuration.Configuration;
-import plaentyapp.repository.ConfigurationRepository;
+import plaentyapp.model.system.HydroponicSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +20,12 @@ import java.util.List;
 @RequestMapping("/configuration")
 public class ConfigurationController {
 	@Autowired
-	ConfigurationRepository configurationRepository;
+	HydroponicSystem system;
 
 	@GetMapping("{id}")
 	public ResponseEntity<Configuration> configurationIdGet(@PathVariable Integer id) {
 		try {
-			return ResponseEntity.ok(configurationRepository.getConfiguration(id));
+			return ResponseEntity.ok(system.getConfiguration(id));
 		} catch (ConfigurationNotFoundException e) {
 			e.printStackTrace();
 			return ResponseEntity.notFound().build();
@@ -36,7 +36,7 @@ public class ConfigurationController {
 	// TODO add oauth
 	public ResponseEntity<Configuration> configurationIdPut(@Valid @RequestBody Configuration body) {
 		try {
-			return ResponseEntity.ok(configurationRepository.updateConfiguration(body));
+			return ResponseEntity.ok(system.updateConfiguration(body));
 		} catch (ConfigurationNotFoundException e) {
 			e.printStackTrace();
 			return ResponseEntity.notFound().build();
@@ -45,13 +45,13 @@ public class ConfigurationController {
 
 	@GetMapping("/list")
 	public ResponseEntity<List<Configuration>> configurationListGet() {
-		return ResponseEntity.ok(configurationRepository.getConfigurationList());
+		return ResponseEntity.ok(system.getConfigurationList());
 	}
 
 	@PostMapping
 	// TODO add oauth
 	public ResponseEntity<Configuration> configurationPost(@Valid @RequestBody Configuration body) {
 		body.setId(null);
-		return ResponseEntity.ok(configurationRepository.saveConfiguration(body));
+		return ResponseEntity.ok(system.saveConfiguration(body));
 	}
 }

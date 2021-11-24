@@ -1,4 +1,4 @@
-package plaentyapp.model.system.sensor;
+package plaentyapp.model.io.sensor;
 
 import org.springframework.stereotype.Component;
 
