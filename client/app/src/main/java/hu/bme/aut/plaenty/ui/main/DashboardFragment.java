@@ -8,8 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.Map;
 
+import hu.bme.aut.plaenty.R;
 import hu.bme.aut.plaenty.databinding.FragmentDashboardBinding;
 import hu.bme.aut.plaenty.model.SensorData;
 import hu.bme.aut.plaenty.network.NetworkManager;
@@ -52,7 +55,9 @@ public class DashboardFragment extends Fragment {
                     binding.ecTextView.setText(String.format("%.2f",sensorState.get(SensorManager.getEcSensor().getSensorId()).getValue()));
                     binding.phTextView.setText(String.format("%.2f",sensorState.get(SensorManager.getPhSensor().getSensorId()).getValue()));
                     binding.lightTextView.setText(String.format("%.2f",sensorState.get(SensorManager.getLightSensor().getSensorId()).getValue()));
-                }
+                },
+                () -> Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()
         );
 
         return root;

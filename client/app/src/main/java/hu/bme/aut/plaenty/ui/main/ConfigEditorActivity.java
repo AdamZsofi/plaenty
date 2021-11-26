@@ -3,6 +3,9 @@ package hu.bme.aut.plaenty.ui.main;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import hu.bme.aut.plaenty.R;
 import hu.bme.aut.plaenty.databinding.ActivityConfigEditorBinding;
@@ -22,6 +25,10 @@ public class ConfigEditorActivity extends AppCompatActivity {
         binding = ActivityConfigEditorBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.lightrequired_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinner.setAdapter(adapter);
+
         Bundle bundle = getIntent().getExtras();
         Long configId = bundle.getLong("id");
 
@@ -29,13 +36,15 @@ public class ConfigEditorActivity extends AppCompatActivity {
                 configuration -> {
                     item = configuration;
                     refreshDisplay();
-                });
-
+                },
+                () -> Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show());
     }
 
     private void refreshDisplay() {
         binding.configEditorName.setText(item.getName());
-        binding.configEditorAuthor.setText(item.getAuthor());
-        binding.configEditorLight.setText(item.getLightRequired().toString());
+        binding.spinner.setSelection(item.getLightRequired().index);
+        binding.phSlider.setValues((float)item.getPhmin(), (float)item.getPhmax());
+        binding.ecSlider.setValues((float)item.getEcmin(), (float)item.getEcmax());
     }
 }

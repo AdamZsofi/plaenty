@@ -74,6 +74,8 @@ public class ConfigFragment extends Fragment {
                             .setAction("Action", null).show();
                     adapter.update(configurations);
                     binding.swipeContainer.setRefreshing(false);
-                });
+                },
+                () -> Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show());
     }
 }

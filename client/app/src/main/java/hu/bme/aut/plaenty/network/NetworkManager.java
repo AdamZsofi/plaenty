@@ -9,6 +9,7 @@ import hu.bme.aut.plaenty.api.ConfigAPI;
 import hu.bme.aut.plaenty.api.DashboardAPI;
 import hu.bme.aut.plaenty.api.SensorsAPI;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkManager {
 
-    private static final String SERVICE_URL = "http://mondokm.sch.bme.hu:8080";
+    private static final String SERVICE_URL = "http://mondokm.sch.bme.hu:9000";
 //    private static final String APP_ID = "f3d694bc3e1d44c1ed5a97bd1120e8fe";
 
     private static NetworkManager instance;
@@ -49,16 +50,20 @@ public class NetworkManager {
         configAPI = retrofit.create(ConfigAPI.class);
     }
 
-    public static <T> void callApi(Call<T> call, Consumer<T> consumer){
+    public static <T> void callApi(Call<T> call, Consumer<T> consumer, Runnable error){
         call.enqueue(new Callback<T>() {
             @Override
             public void onResponse(Call<T> call, Response<T> response) {
-                consumer.accept(response.body());
+                if(!response.isSuccessful()){
+                    error.run();
+                } else {
+                    consumer.accept(response.body());
+                }
             }
 
             @Override
             public void onFailure(Call<T> call, Throwable t) {
-
+                error.run();
             }
         });
     }

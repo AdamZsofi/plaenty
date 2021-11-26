@@ -10,11 +10,13 @@ package hu.bme.aut.plaenty.model;
  * 	0.01 - 1 lux - night (moonlight)
  */
 public enum LightLevel {
-	LOW(0), NORMAL(1000), HIGH(30000);
+	LOW(0,0), NORMAL(1000,1), HIGH(30000,2);
 
 	public final double minValue;
+	public final int index;
 
-	private LightLevel(double minValue) {
+	private LightLevel(double minValue, int index) {
 		this.minValue = minValue;
+		this.index = index;
 	}
 }

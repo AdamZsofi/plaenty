@@ -1,5 +1,11 @@
 package hu.bme.aut.plaenty.network;
 
+import android.accounts.NetworkErrorException;
+import android.view.View;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import hu.bme.aut.plaenty.R;
 import hu.bme.aut.plaenty.model.Sensor;
 import lombok.Getter;
 
@@ -17,7 +23,7 @@ public class SensorManager {
         return instance;
     }
 
-    public static void initializeSensorData() {
+    public static void initializeSensorData(View errorView) {
         NetworkManager.callApi(
                 NetworkManager.getInstance().getSensorsAPI().getSensorList(),
                 sensorList -> sensorList.forEach(
@@ -27,7 +33,9 @@ public class SensorManager {
                             else if (sensor.getName().equals("mock EC sensor")) ecSensor = sensor;
                             else throw new RuntimeException("Unexpected sensor received");
                         }
-                )
+                ),
+                () -> Snackbar.make(errorView, R.string.network_error, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()
         );
     }
 
