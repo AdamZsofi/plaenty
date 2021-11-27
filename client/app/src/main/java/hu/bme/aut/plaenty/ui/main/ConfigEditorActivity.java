@@ -3,6 +3,7 @@ package hu.bme.aut.plaenty.ui.main;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -18,7 +19,7 @@ import hu.bme.aut.plaenty.network.NetworkManager;
 
 public class ConfigEditorActivity extends AppCompatActivity {
 
-    Configuration item;
+    Configuration item = null;
     ActivityConfigEditorBinding binding;
 
     @Override
@@ -36,7 +37,7 @@ public class ConfigEditorActivity extends AppCompatActivity {
         Long configId = bundle.getLong("id");
 
         Optional<Configuration> itemOptional = ConfigManager.getConfigWithId(configId);
-        if(!itemOptional.isPresent()){
+        if (!itemOptional.isPresent()) {
             Snackbar.make(binding.getRoot(), R.string.config_error, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         } else {
@@ -49,7 +50,15 @@ public class ConfigEditorActivity extends AppCompatActivity {
     private void refreshDisplay() {
         binding.configEditorName.setText(item.getName());
         binding.spinner.setSelection(item.getLightRequired().index);
-        binding.phSlider.setValues((float)item.getPhmin(), (float)item.getPhmax());
-        binding.ecSlider.setValues((float)item.getEcmin(), (float)item.getEcmax());
+        binding.phSlider.setValues((float) item.getPhmin(), (float) item.getPhmax());
+        binding.ecSlider.setValues((float) item.getEcmin(), (float) item.getEcmax());
+    }
+
+    public void setAsActive(View view) {
+        if(item == null) return;
+        ConfigManager.setActiveConfiguration(item,
+                () -> Snackbar.make(binding.getRoot(), R.string.set_active_error, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show());
+
     }
 }

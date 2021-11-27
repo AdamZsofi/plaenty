@@ -28,7 +28,7 @@ public class ActiveConfigurationController {
 	}
 
 	@PutMapping("{id}")
-	public ResponseEntity<Configuration> activeConfigurationIdPut(@PathVariable Integer id) {
+	public ResponseEntity<Configuration> activeConfigurationIdPut(@PathVariable Long id) {
 		try {
 			return ResponseEntity.ok(hydroponicSystem.updateActiveConfiguration(id));
 		} catch (ConfigurationNotFoundException e) {

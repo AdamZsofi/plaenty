@@ -11,7 +11,13 @@ public class ConfigManager {
 
     private static Configuration activeConfiguration = null;
 
-    public static void setActiveConfiguration(Configuration configuration){
+    public static void setActiveConfiguration(Configuration activeConfiguration, Runnable error){
+        NetworkManager.callApi(NetworkManager.getInstance().getActiveConfigurationAPI().activeConfigurationIdPut(activeConfiguration.getId()),
+                configuration -> updateConfigurations(() -> error.run()),
+                () -> error.run());
+    }
+
+    private static void updateActiveConfiguration(Configuration configuration){
         ConfigManager.activeConfiguration = configuration;
         listeners.forEach(l -> l.activeConfigurationChanged(configuration));
     }
@@ -23,7 +29,7 @@ public class ConfigManager {
         return configurations.stream().filter(configuration -> configuration.getId() == id).findFirst();
     }
 
-    public static void setConfigurations(List<Configuration> configurations){
+    private static void updateConfiguration(List<Configuration> configurations){
         ConfigManager.configurations.clear();
         ConfigManager.configurations.addAll(configurations);
         listeners.forEach(l -> l.configurationsChanged(configurations));
@@ -38,17 +44,19 @@ public class ConfigManager {
 
     public static void addListener(ConfigurationChangeListener listener){
         ConfigManager.listeners.add(listener);
+        if(activeConfiguration!=null) listener.activeConfigurationChanged(activeConfiguration);
+        if(configurations!=null) listener.configurationsChanged(configurations);
     }
 
     public static void updateConfigurations(Runnable error){
         NetworkManager.callApi(NetworkManager.getInstance().getConfigAPI().configurationListGet(),
                 configurations -> {
-                   ConfigManager.setConfigurations(configurations);
+                   ConfigManager.updateConfiguration(configurations);
                 },
                 () -> error.run());
         NetworkManager.callApi(NetworkManager.getInstance().getActiveConfigurationAPI().getActiveConfiguration(),
                 activeConfiguration -> {
-                    ConfigManager.setActiveConfiguration(activeConfiguration);
+                    ConfigManager.updateActiveConfiguration(activeConfiguration);
                 },
                 () -> error.run());
     }

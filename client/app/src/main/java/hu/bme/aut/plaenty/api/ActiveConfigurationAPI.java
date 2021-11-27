@@ -15,5 +15,5 @@ public interface ActiveConfigurationAPI {
 
     @Headers({"Content-Type: application/json"})
     @PUT("active-configuration/{id}")
-    Call<Configuration> activeConfigurationIdPut(@Path("id") Integer id, @Body Configuration config);
+    Call<Configuration> activeConfigurationIdPut(@Path("id") Long id);
 }

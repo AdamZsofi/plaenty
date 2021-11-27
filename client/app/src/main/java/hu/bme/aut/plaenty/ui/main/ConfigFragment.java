@@ -54,7 +54,6 @@ public class ConfigFragment extends Fragment implements ConfigManager.Configurat
         binding = FragmentConfigBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        ConfigManager.addListener(this);
 
         adapter = new ConfigAdapter(item -> {
             Intent intent = new Intent(getActivity(), ConfigEditorActivity.class);
@@ -66,6 +65,8 @@ public class ConfigFragment extends Fragment implements ConfigManager.Configurat
         binding.configRecyclerView.setAdapter(adapter);
         binding.configRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
+        ConfigManager.addListener(this);
+        
         updateConfigList();
         binding.swipeContainer.setOnRefreshListener(this::updateConfigList);
 
