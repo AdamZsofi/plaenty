@@ -33,14 +33,29 @@
                         android:layout_height="wrap_content"
                         android:text="@string/ec_sensor" />
 
-                    <TextView
-                        android:id="@+id/ecTextView"
-                        android:textStyle="bold"
-                        android:textSize="52dp"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/nan" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/ecTextView"
+                            android:textStyle="bold"
+                            android:textSize="50dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/nan" />
+
+                        <TextView
+                            android:id="@+id/ecDim"
+                            android:textSize="20dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text=" dS/m" />
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
@@ -67,7 +82,7 @@
                         android:id="@+id/phTextView"
                         android:text="@string/nan"
                         android:textStyle="bold"
-                        android:textSize="52dp"
+                        android:textSize="50dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
@@ -93,11 +108,54 @@
                     android:layout_height="wrap_content"
                     android:text="@string/light_sensor"/>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/lightTextView"
+                        android:text="@string/nan"
+                        android:textStyle="bold"
+                        android:textSize="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/lightDim"
+                        android:textSize="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text=" lux" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp">
+
                 <TextView
-                    android:id="@+id/lightTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/active_config"/>
+
+                <TextView
+                    android:id="@+id/activeConfigTextView"
                     android:text="@string/nan"
                     android:textStyle="bold"
-                    android:textSize="32dp"
+                    android:textSize="30dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 

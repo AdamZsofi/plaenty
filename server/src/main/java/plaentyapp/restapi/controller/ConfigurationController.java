@@ -33,7 +33,6 @@ public class ConfigurationController {
 	}
 
 	@PutMapping
-	// TODO add oauth
 	public ResponseEntity<Configuration> configurationIdPut(@Valid @RequestBody Configuration body) {
 		try {
 			return ResponseEntity.ok(system.updateConfiguration(body));
@@ -49,7 +48,6 @@ public class ConfigurationController {
 	}
 
 	@PostMapping
-	// TODO add oauth
 	public ResponseEntity<Configuration> configurationPost(@Valid @RequestBody Configuration body) {
 		body.setId(null);
 		return ResponseEntity.ok(system.saveConfiguration(body));

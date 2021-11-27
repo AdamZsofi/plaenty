@@ -7,10 +7,13 @@ import android.widget.ArrayAdapter;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Optional;
+
 import hu.bme.aut.plaenty.R;
 import hu.bme.aut.plaenty.databinding.ActivityConfigEditorBinding;
 import hu.bme.aut.plaenty.databinding.ActivityMainBinding;
 import hu.bme.aut.plaenty.model.Configuration;
+import hu.bme.aut.plaenty.network.ConfigManager;
 import hu.bme.aut.plaenty.network.NetworkManager;
 
 public class ConfigEditorActivity extends AppCompatActivity {
@@ -32,13 +35,15 @@ public class ConfigEditorActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         Long configId = bundle.getLong("id");
 
-        NetworkManager.callApi(NetworkManager.getInstance().getConfigAPI().configurationIdGet(configId.intValue()),
-                configuration -> {
-                    item = configuration;
-                    refreshDisplay();
-                },
-                () -> Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show());
+        Optional<Configuration> itemOptional = ConfigManager.getConfigWithId(configId);
+        if(!itemOptional.isPresent()){
+            Snackbar.make(binding.getRoot(), R.string.config_error, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        } else {
+            item = itemOptional.get();
+            refreshDisplay();
+        }
+
     }
 
     private void refreshDisplay() {

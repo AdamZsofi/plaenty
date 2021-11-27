@@ -27,7 +27,6 @@ public class ActiveConfigurationController {
 		}
 	}
 
-	// TODO how does oauth sec work?
 	@PutMapping("{id}")
 	public ResponseEntity<Configuration> activeConfigurationIdPut(@PathVariable Integer id) {
 		try {

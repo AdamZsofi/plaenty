@@ -13,10 +13,14 @@ import android.view.ViewGroup;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.List;
+
 import hu.bme.aut.plaenty.MainActivity;
 import hu.bme.aut.plaenty.R;
 import hu.bme.aut.plaenty.databinding.FragmentConfigBinding;
 import hu.bme.aut.plaenty.databinding.FragmentDashboardBinding;
+import hu.bme.aut.plaenty.model.Configuration;
+import hu.bme.aut.plaenty.network.ConfigManager;
 import hu.bme.aut.plaenty.network.NetworkManager;
 
 /**
@@ -24,7 +28,7 @@ import hu.bme.aut.plaenty.network.NetworkManager;
  * Use the {@link ConfigFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ConfigFragment extends Fragment {
+public class ConfigFragment extends Fragment implements ConfigManager.ConfigurationChangeListener {
 
     private FragmentConfigBinding binding;
     private ConfigAdapter adapter;
@@ -50,6 +54,8 @@ public class ConfigFragment extends Fragment {
         binding = FragmentConfigBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        ConfigManager.addListener(this);
+
         adapter = new ConfigAdapter(item -> {
             Intent intent = new Intent(getActivity(), ConfigEditorActivity.class);
             Bundle b = new Bundle();
@@ -68,14 +74,18 @@ public class ConfigFragment extends Fragment {
 
     private void updateConfigList(){
         binding.swipeContainer.setRefreshing(true);
-        NetworkManager.callApi(NetworkManager.getInstance().getConfigAPI().configurationListGet(),
-                configurations -> {
-//                    Snackbar.make(binding.getRoot(), configurations.toString(), Snackbar.LENGTH_LONG)
-//                            .setAction("Action", null).show();
-                    adapter.update(configurations);
-                    binding.swipeContainer.setRefreshing(false);
-                },
-                () -> Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show());
+        ConfigManager.updateConfigurations(() -> Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
+    }
+
+    @Override
+    public void configurationsChanged(List<Configuration> configurations) {
+        binding.swipeContainer.setRefreshing(false);
+        adapter.update(configurations);
+    }
+
+    @Override
+    public void activeConfigurationChanged(Configuration activeConfiguration) {
+        adapter.setActiveConfig(activeConfiguration);
     }
 }

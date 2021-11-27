@@ -25,6 +25,10 @@ import net.openid.appauth.ResponseTypeValues;
 import net.openid.appauth.TokenRequest;
 import net.openid.appauth.TokenResponse;
 
+import java.util.List;
+
+import hu.bme.aut.plaenty.model.Configuration;
+import hu.bme.aut.plaenty.network.ConfigManager;
 import hu.bme.aut.plaenty.network.LoginManager;
 import hu.bme.aut.plaenty.network.NetworkManager;
 import hu.bme.aut.plaenty.network.SensorManager;
@@ -43,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         SensorManager.initializeSensorData(binding.getRoot());
+
+        ConfigManager.updateConfigurations(() -> Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = binding.viewPager;
@@ -80,8 +87,5 @@ public class MainActivity extends AppCompatActivity {
 
         } else throw new UnsupportedOperationException("Unknown request code " + requestCode);
     }
-
-
-
 
 }

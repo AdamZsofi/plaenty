@@ -1,11 +1,17 @@
 package hu.bme.aut.plaenty.ui.main;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -18,6 +24,7 @@ public class ConfigAdapter
         extends RecyclerView.Adapter<ConfigAdapter.ConfigViewHolder> {
 
     private final List<Configuration> items;
+    private Configuration activeConfig = null;
 
     private ShoppingItemClickListener listener;
 
@@ -35,10 +42,14 @@ public class ConfigAdapter
         return new ConfigViewHolder(itemView);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull ConfigViewHolder holder, int position) {
         Configuration item = items.get(position);
         holder.configName.setText(item.getName());
+
+        holder.configName.setTypeface(null, activeConfig!=null && activeConfig.getId()==item.getId() ? Typeface.BOLD: Typeface.NORMAL);
+//        holder.itemView.setBackgroundColor(activePos == position ? Color.GRAY : Color.TRANSPARENT);
 
         holder.item = item;
     }
@@ -54,14 +65,22 @@ public class ConfigAdapter
 
     class ConfigViewHolder extends RecyclerView.ViewHolder {
 
+        CardView cardView;
         TextView configName;
+        ImageView editButton;
+        CoordinatorLayout detailsView;
+
         Configuration item;
 
         ConfigViewHolder(View itemView) {
             super(itemView);
             configName = itemView.findViewById(R.id.config_name);
+            cardView = itemView.findViewById(R.id.config_card);
+            editButton = itemView.findViewById(R.id.edit_button);
+            detailsView = itemView.findViewById(R.id.config_details);
 
-            itemView.setOnClickListener(v -> {listener.onItemChanged(item);});
+            cardView.setOnClickListener(v -> detailsView.setVisibility(detailsView.getVisibility() == View.GONE ? View.VISIBLE : View.GONE));
+            editButton.setOnClickListener(v -> {listener.onItemChanged(item);});
         }
     }
 
@@ -73,6 +92,11 @@ public class ConfigAdapter
     public void update(List<Configuration> configurations) {
         items.clear();
         items.addAll(configurations);
+        notifyDataSetChanged();
+    }
+
+    public void setActiveConfig(Configuration activeConfig){
+        this.activeConfig = activeConfig;
         notifyDataSetChanged();
     }
 }

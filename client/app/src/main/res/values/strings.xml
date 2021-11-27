@@ -5,7 +5,9 @@
     <string name="ec_sensor">Ec:</string>
     <string name="ph_sensor">Ph:</string>
     <string name="light_sensor">Light:</string>
+    <string name="active_config">Active config:</string>
     <string name="network_error">Network error. Please check your connection!</string>
+    <string name="config_error">Couldn\'t find configuration</string>
     <string name="nan">NaN</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
