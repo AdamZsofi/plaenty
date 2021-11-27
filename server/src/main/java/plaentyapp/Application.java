@@ -28,24 +28,25 @@ public class Application extends WebSecurityConfigurerAdapter implements Command
 		http.csrf().disable()
 			.authorizeRequests()
 				.antMatchers(HttpMethod.POST, "/configuration")
-				//.authenticated().and()
-				.permitAll().and()
+				.authenticated().and()
+//				.permitAll().and()
 			.authorizeRequests()
 				.antMatchers(HttpMethod.PUT, "/configuration**")
-				//.authenticated().and()
-				.permitAll().and()
+				.authenticated().and()
+//				.permitAll().and()
 			.authorizeRequests()
 				.antMatchers(HttpMethod.PUT, "/active-configuration**")
-				//.authenticated().and()
-				.permitAll().and()
+				.authenticated().and()
+//				.permitAll().and()
 			.authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/user")
-				//.authenticated().and()
-				.permitAll().and()
+				.authenticated().and()
+//				.rememberMe().and()
+//				.permitAll().and()
 			.authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/login/*", "/error/*", "/configuration/*", "/sensor/*", "/active-configuration/*", "/dashboard*")
-				.permitAll().and()
-			.oauth2Login();
+				.permitAll().and();
+//			.oauth2Login();
 	}
 
 	@Override

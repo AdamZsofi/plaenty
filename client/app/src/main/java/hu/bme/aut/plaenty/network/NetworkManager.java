@@ -7,10 +7,12 @@ import java.util.function.Consumer;
 import hu.bme.aut.plaenty.api.ActiveConfigurationAPI;
 import hu.bme.aut.plaenty.api.ConfigAPI;
 import hu.bme.aut.plaenty.api.DashboardAPI;
+import hu.bme.aut.plaenty.api.LoginAPI;
 import hu.bme.aut.plaenty.api.SensorsAPI;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,8 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkManager {
 
-    private static final String SERVICE_URL = "http://mondokm.sch.bme.hu:9000";
-//    private static final String APP_ID = "f3d694bc3e1d44c1ed5a97bd1120e8fe";
+    private static final String SERVICE_URL = "http://217.197.189.128:9000";
 
     private static NetworkManager instance;
 
@@ -37,17 +38,23 @@ public class NetworkManager {
     @Getter private DashboardAPI dashboardAPI;
     @Getter private SensorsAPI sensorsAPI;
     @Getter private ConfigAPI configAPI;
+    @Getter private LoginAPI loginAPI;
 
     private NetworkManager() {
         retrofit = new Retrofit.Builder()
                 .baseUrl(SERVICE_URL + "/")
-                .client(new OkHttpClient.Builder().build())
+                .client(new OkHttpClient.Builder().addInterceptor(chain -> {
+                    Request request = chain.request();
+                    request = request.newBuilder().header("Authorization", "token "+LoginManager.getToken()).build();
+                    return chain.proceed(request);
+                }).build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         activeConfigurationAPI = retrofit.create(ActiveConfigurationAPI.class);
         dashboardAPI = retrofit.create(DashboardAPI.class);
         sensorsAPI = retrofit.create(SensorsAPI.class);
         configAPI = retrofit.create(ConfigAPI.class);
+        loginAPI = retrofit.create(LoginAPI.class);
     }
 
     public static <T> void callApi(Call<T> call, Consumer<T> consumer, Runnable error){
@@ -63,6 +70,7 @@ public class NetworkManager {
 
             @Override
             public void onFailure(Call<T> call, Throwable t) {
+
                 error.run();
             }
         });

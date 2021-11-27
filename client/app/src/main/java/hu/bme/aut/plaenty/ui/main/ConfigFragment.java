@@ -70,8 +70,8 @@ public class ConfigFragment extends Fragment {
         binding.swipeContainer.setRefreshing(true);
         NetworkManager.callApi(NetworkManager.getInstance().getConfigAPI().configurationListGet(),
                 configurations -> {
-                    Snackbar.make(binding.getRoot(), configurations.toString(), Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+//                    Snackbar.make(binding.getRoot(), configurations.toString(), Snackbar.LENGTH_LONG)
+//                            .setAction("Action", null).show();
                     adapter.update(configurations);
                     binding.swipeContainer.setRefreshing(false);
                 },

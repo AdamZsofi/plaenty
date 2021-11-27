@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
 	@GetMapping("/user")
 	public ResponseEntity<String> user(@AuthenticationPrincipal OAuth2User principal) {
-		return ResponseEntity.ok((String)principal.getAttributes().get("name"));
+		System.err.println("asd");
+		return ResponseEntity.ok("{ \"message\": \""+(String)principal.getAttributes().get("name")+"\"}");
 	}
 }
