@@ -3,6 +3,7 @@ package hu.bme.aut.plaenty.network;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import hu.bme.aut.plaenty.model.Configuration;
 
@@ -23,9 +24,12 @@ public class ConfigManager {
                 error);
     }
 
-    public static void uploadNewConfiguration(Configuration configuration, Runnable error){
+    public static void uploadNewConfiguration(Configuration configuration, Consumer<Long> success, Runnable error){
         NetworkManager.callApi(NetworkManager.getInstance().getConfigAPI().configurationPost(configuration),
-                c -> updateConfigurations(error),
+                c -> {
+                    success.accept(c.getId());
+                    updateConfigurations(error);
+                },
                 error);
     }
 
