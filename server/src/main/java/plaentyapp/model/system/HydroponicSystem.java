@@ -190,4 +190,11 @@ public class HydroponicSystem {
 		pump.turnActuatorOff();
 		logger.info("Actuators turned off successfully");
 	}
+
+	public boolean deleteConfiguration(long id) {
+		if(id==activeConfiguration.getId()) {
+			return false;
+		}
+		return configurationRepository.deleteConfiguration(id));
+	}
 }
