@@ -12,9 +12,13 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-public interface LoginAPI {
+public interface UserAPI {
 
-    @GET("user")
-    Call<User> getUser();
+    @PUT("users/sign-up")
+    Call signUp(@Body User user);
+
+
+    @PUT("login")
+    Call<String> login(@Body User user);
 
 }

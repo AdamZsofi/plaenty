@@ -55,7 +55,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
 				.sign(HMAC512(SECRET.getBytes()));
 		res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
-//		res.addHeader("isAdmin",((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))?"1":"0");
-//		res.addHeader("userid",userRepository.findByName((((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())).getId().toString());
+		res.getWriter().write(token);
+    	res.getWriter().flush();
 	}
 }

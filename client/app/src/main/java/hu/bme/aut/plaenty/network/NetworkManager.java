@@ -1,16 +1,13 @@
 package hu.bme.aut.plaenty.network;
 
-import android.accounts.NetworkErrorException;
-
 import java.util.function.Consumer;
 
 import hu.bme.aut.plaenty.api.ActiveConfigurationAPI;
 import hu.bme.aut.plaenty.api.ConfigAPI;
 import hu.bme.aut.plaenty.api.DashboardAPI;
-import hu.bme.aut.plaenty.api.LoginAPI;
+import hu.bme.aut.plaenty.api.UserAPI;
 import hu.bme.aut.plaenty.api.SensorsAPI;
 import lombok.Getter;
-import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Call;
@@ -38,7 +35,7 @@ public class NetworkManager {
     @Getter private DashboardAPI dashboardAPI;
     @Getter private SensorsAPI sensorsAPI;
     @Getter private ConfigAPI configAPI;
-    @Getter private LoginAPI loginAPI;
+    @Getter private UserAPI userAPI;
 
     private NetworkManager() {
         retrofit = new Retrofit.Builder()
@@ -54,7 +51,7 @@ public class NetworkManager {
         dashboardAPI = retrofit.create(DashboardAPI.class);
         sensorsAPI = retrofit.create(SensorsAPI.class);
         configAPI = retrofit.create(ConfigAPI.class);
-        loginAPI = retrofit.create(LoginAPI.class);
+        userAPI = retrofit.create(UserAPI.class);
     }
 
     public static <T> void callApi(Call<T> call, Consumer<T> consumer, Runnable error){
