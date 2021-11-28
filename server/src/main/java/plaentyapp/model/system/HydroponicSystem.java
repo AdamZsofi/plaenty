@@ -76,7 +76,7 @@ public class HydroponicSystem {
 
 	// not scheduled, as that cannot change the rates at runtime
 	private void startPumpCycle() {
-		logger.info("Starting pump cycle, adding timers...");
+		logger.info("(Re)starting pump cycle, adding timers...");
 		if(pumpOnTimer!=null) {
 			pumpOnTimer.cancel();
 		}
@@ -131,12 +131,15 @@ public class HydroponicSystem {
 		logger.info("Updating active configuration");
 		activeConfiguration = configurationRepository.getConfiguration(configId);
 		logger.info("Active configuration set to new value: " + activeConfiguration);
+		startPumpCycle();
 		return activeConfiguration;
 	}
 
 	public Configuration updateConfiguration(Configuration updatedConfig) {
-		Configuration updatedConfig = configurationRepository.updateConfiguration(updatedConfig);
-		if(updatedConfig.getId())
+		updatedConfig = configurationRepository.updateConfiguration(updatedConfig);
+		if(updatedConfig.getId().equals(activeConfiguration.getId())) {
+			updateActiveConfiguration(updatedConfig.getId());
+		}
 		return updatedConfig;
 	}
 
