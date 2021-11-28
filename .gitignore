@@ -26,3 +26,5 @@ hs_err_pid*
 server/target
 server/testdb.script.tmp
 server/plaentydb.script.lck
+
+server/swagger-spring.iml

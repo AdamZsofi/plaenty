@@ -1,5 +1,8 @@
 package plaentyapp.restapi.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import plaentyapp.model.configuration.ConfigurationNotFoundException;
 import plaentyapp.model.configuration.Configuration;
 import plaentyapp.model.system.HydroponicSystem;
@@ -34,6 +37,13 @@ public class ConfigurationController {
 
 	@PutMapping
 	public ResponseEntity<Configuration> configurationIdPut(@Valid @RequestBody Configuration body) {
+		String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Configuration oldConfiguration = system.getConfiguration(body.getId());
+		if(!username.equals(oldConfiguration.getAuthor())) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // prevent anyone else but the author from editing the config
+		}
+		System.err.println(username);
+
 		try {
 			return ResponseEntity.ok(system.updateConfiguration(body));
 		} catch (ConfigurationNotFoundException e) {
@@ -50,6 +60,9 @@ public class ConfigurationController {
 	@PostMapping
 	public ResponseEntity<Configuration> configurationPost(@Valid @RequestBody Configuration body) {
 		body.setId(null);
+		String user = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		body.setAuthor(user);
+
 		return ResponseEntity.ok(system.saveConfiguration(body));
 	}
 }

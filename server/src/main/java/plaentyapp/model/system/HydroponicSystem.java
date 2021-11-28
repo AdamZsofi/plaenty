@@ -108,7 +108,7 @@ public class HydroponicSystem {
 		logger.info("Pump cycle timers set");
 	}
 
-	@Scheduled(fixedRate=5*60000)
+	@Scheduled(fixedRate=30000)
 	public void updateSensors() {
 		logger.info("Taking sensor measurements");
 		for (Sensor sensor : sensors.getSensorList()) {
@@ -156,7 +156,7 @@ public class HydroponicSystem {
 		return activeConfiguration;
 	}
 
-	public Configuration getConfiguration(Integer id) {
+	public Configuration getConfiguration(long id) {
 		return configurationRepository.getConfiguration(id);
 	}
 
@@ -164,11 +164,11 @@ public class HydroponicSystem {
 		return configurationRepository.getConfigurationList();
 	}
 
-	public List<SensorData> getSensorData(Integer sensorid, LocalDateTime from) {
+	public List<SensorData> getSensorData(long sensorid, LocalDateTime from) {
 		return sensorDataRepository.getSensorData(sensors.getSensorById(sensorid), from);
 	}
 
-	public List<SensorData> getSensorData(Integer sensorid) {
+	public List<SensorData> getSensorData(long sensorid) {
 		return sensorDataRepository.getSensorData(sensors.getSensorById(sensorid));
 	}
 

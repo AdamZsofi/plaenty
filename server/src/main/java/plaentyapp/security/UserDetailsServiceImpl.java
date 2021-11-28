@@ -1,12 +1,10 @@
 package plaentyapp.security;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import plaentyapp.model.User;
+import plaentyapp.model.user.User;
 import plaentyapp.repository.UserRepository;
 
 import java.util.ArrayList;
