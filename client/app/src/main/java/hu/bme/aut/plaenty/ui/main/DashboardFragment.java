@@ -67,6 +67,14 @@ public class DashboardFragment extends Fragment implements ConfigManager.Configu
         return root;
     }
 
+    private void startDiagramActivity(Sensor sensor){
+        Intent intent = new Intent(getActivity(), DiagramActivity.class);
+        Bundle b = new Bundle();
+        b.putLong("id", sensor.getSensorId());
+        intent.putExtras(b);
+        startActivity(intent);
+    }
+
     private void updateData(){
         binding.dashboardSwipe.setRefreshing(true);
         ConfigManager.updateConfigurations(() -> Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
@@ -79,6 +87,10 @@ public class DashboardFragment extends Fragment implements ConfigManager.Configu
                     binding.phTextView.setText(formatSensorData(sensorState.get(SensorManager.getPhSensor().getSensorId()).getValue()));
                     binding.lightTextView.setText(formatSensorData(sensorState.get(SensorManager.getLightSensor().getSensorId()).getValue()));
                     binding.dashboardSwipe.setRefreshing(false);
+
+                    binding.phCard.setOnClickListener(v -> startDiagramActivity(SensorManager.getPhSensor()));
+                    binding.ecCard.setOnClickListener(v -> startDiagramActivity(SensorManager.getEcSensor()));
+                    binding.lightCard.setOnClickListener(v -> startDiagramActivity(SensorManager.getLightSensor()));
                 },
                 () -> {
                     Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)

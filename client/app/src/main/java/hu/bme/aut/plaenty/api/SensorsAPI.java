@@ -13,7 +13,7 @@ import retrofit2.http.Query;
 public interface SensorsAPI {
 
     @GET("sensor/data/{sensorid}")
-    Call<List<SensorData>> sendSensorData(@Path("sensorid") Integer sensorid, @Query("from") LocalDateTime from);
+    Call<List<SensorData>> sendSensorData(@Path("sensorid") Long sensorid, @Query("from") LocalDateTime from);
 
     @GET("sensor/list")
     Call<List<Sensor>> getSensorList();

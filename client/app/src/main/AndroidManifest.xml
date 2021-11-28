@@ -14,9 +14,12 @@
         android:theme="@style/Theme.Plaenty"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.main.LoginActivity"
-            android:windowSoftInputMode="adjustResize"
+            android:name=".ui.main.DiagramActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.main.LoginActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.main.ConfigEditorActivity"
             android:exported="false">
