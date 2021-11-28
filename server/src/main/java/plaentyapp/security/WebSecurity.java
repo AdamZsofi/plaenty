@@ -31,7 +31,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable().authorizeRequests()
 				.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
 				.antMatchers(HttpMethod.GET, "/login/*", "/error/*", "/configuration/*", "/sensor/*", "/active-configuration/*", "/dashboard*").permitAll()
-//				.anyRequest().authenticated()
+//				.anyRequest().authenticated() //TODO reenable
 				.anyRequest().permitAll()
 				.and()
 				.addFilter(new JWTAuthenticationFilter(authenticationManager()))

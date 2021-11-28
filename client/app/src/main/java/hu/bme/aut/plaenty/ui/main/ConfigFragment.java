@@ -66,17 +66,20 @@ public class ConfigFragment extends Fragment implements ConfigManager.Configurat
         binding.configRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         ConfigManager.addListener(this);
-        
+
         updateConfigList();
         binding.swipeContainer.setOnRefreshListener(this::updateConfigList);
 
         return root;
     }
 
-    private void updateConfigList(){
+    private void updateConfigList() {
         binding.swipeContainer.setRefreshing(true);
-        ConfigManager.updateConfigurations(() -> Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
+        ConfigManager.updateConfigurations(() -> {
+            Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+            binding.swipeContainer.setRefreshing(false);
+        });
     }
 
     @Override

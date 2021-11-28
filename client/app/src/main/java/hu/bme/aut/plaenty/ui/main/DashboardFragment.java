@@ -55,6 +55,15 @@ public class DashboardFragment extends Fragment implements ConfigManager.Configu
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        updateData();
+
+        binding.dashboardSwipe.setOnRefreshListener(this::updateData);
+
+        return root;
+    }
+
+    private void updateData(){
+        binding.dashboardSwipe.setRefreshing(true);
         NetworkManager.callApi(
                 NetworkManager.getInstance().getDashboardAPI().getDashboardData(),
                 systemState -> {
@@ -62,12 +71,14 @@ public class DashboardFragment extends Fragment implements ConfigManager.Configu
                     binding.ecTextView.setText(formatSensorData(sensorState.get(SensorManager.getEcSensor().getSensorId())));
                     binding.phTextView.setText(formatSensorData(sensorState.get(SensorManager.getPhSensor().getSensorId())));
                     binding.lightTextView.setText(formatSensorData(sensorState.get(SensorManager.getLightSensor().getSensorId())));
+                    binding.dashboardSwipe.setRefreshing(false);
                 },
-                () -> Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show()
+                () -> {
+                    Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    binding.dashboardSwipe.setRefreshing(false);
+                }
         );
-
-        return root;
     }
 
     private String formatSensorData(SensorData sensorData){
