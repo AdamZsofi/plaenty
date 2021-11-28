@@ -1,5 +1,7 @@
 package hu.bme.aut.plaenty.ui.main;
 
+import static hu.bme.aut.plaenty.util.SensorUtil.formatSensorData;
+
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -21,6 +23,7 @@ import java.util.Map;
 
 import hu.bme.aut.plaenty.R;
 import hu.bme.aut.plaenty.model.Configuration;
+import hu.bme.aut.plaenty.network.LoginManager;
 
 public class ConfigAdapter
         extends RecyclerView.Adapter<ConfigAdapter.ConfigViewHolder> {
@@ -51,12 +54,19 @@ public class ConfigAdapter
         Configuration item = items.get(position);
         holder.configName.setText(item.getName());
 
+        holder.dropdownAuthor.setText(item.getAuthor());
+        holder.dropdownEc.setText(formatSensorData(item.getEcmin())+" - "+formatSensorData(item.getEcmax()));
+        holder.dropdownpH.setText(formatSensorData(item.getPhmin())+" - "+formatSensorData(item.getPhmax()));
+        holder.dropdownLight.setText(item.getLightRequired().toString());
+        holder.dropdownPump.setText(item.getPumpon()+"/"+item.getPumpoff());
+
         holder.configName.setTypeface(null, activeConfig!=null && activeConfig.getId().equals(item.getId()) ? Typeface.BOLD: Typeface.NORMAL);
         holder.cardView.setOnClickListener(v -> {
             openedMap.put(item, !openedMap.getOrDefault(item, true));
             notifyItemChanged(position);
         });
         holder.detailsView.setVisibility(openedMap.getOrDefault(item, false).booleanValue()? View.VISIBLE : View.GONE);
+        holder.editButton.setVisibility(LoginManager.isLoggedIn() && LoginManager.getUsername().equals(item.getAuthor())? View.VISIBLE : View.GONE);
         holder.editButton.setOnClickListener(v -> listener.onItemChanged(item));
 
         holder.item = item;
@@ -78,6 +88,12 @@ public class ConfigAdapter
         ImageView editButton;
         CoordinatorLayout detailsView;
 
+        TextView dropdownAuthor;
+        TextView dropdownEc;
+        TextView dropdownpH;
+        TextView dropdownLight;
+        TextView dropdownPump;
+
         Configuration item;
 
         ConfigViewHolder(View itemView) {
@@ -87,7 +103,11 @@ public class ConfigAdapter
             editButton = itemView.findViewById(R.id.edit_button);
             detailsView = itemView.findViewById(R.id.config_details);
 
-
+            dropdownAuthor = itemView.findViewById(R.id.dropdown_author);
+            dropdownEc = itemView.findViewById(R.id.dropdown_ec);
+            dropdownpH = itemView.findViewById(R.id.dropdown_ph);
+            dropdownLight = itemView.findViewById(R.id.dropdown_light);
+            dropdownPump = itemView.findViewById(R.id.dropdown_pump);
         }
     }
 

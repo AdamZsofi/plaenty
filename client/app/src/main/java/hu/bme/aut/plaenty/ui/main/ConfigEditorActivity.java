@@ -1,5 +1,7 @@
 package hu.bme.aut.plaenty.ui.main;
 
+import static hu.bme.aut.plaenty.util.SensorUtil.formatSensorData;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -60,10 +62,6 @@ public class ConfigEditorActivity extends AppCompatActivity implements ConfigMan
 
         refreshDisplay();
 
-    }
-
-    private String formatSensorData(double value) {
-        return String.format("%.2f", value);
     }
 
     private void refreshDisplay() {

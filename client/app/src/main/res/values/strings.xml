@@ -10,7 +10,14 @@
     <string name="config_error">Couldn\'t find configuration</string>
     <string name="set_active">Set as active configuration</string>
     <string name="set_active_error">Couldn\'t set active configuration</string>
+    <string name="login_error">Login failed</string>
+    <string name="signup_error">Signup failed</string>
     <string name="nan">NaN</string>
+    <string name="not_logged_in">Not logged in</string>
+    <string name="username">Username:</string>
+    <string name="password">Password:</string>
+    <string name="login">Log in</string>
+    <string name="sign_up">Sign up</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string-array name="lightrequired_array">

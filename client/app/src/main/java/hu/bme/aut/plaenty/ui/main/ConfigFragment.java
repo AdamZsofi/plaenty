@@ -21,6 +21,7 @@ import hu.bme.aut.plaenty.databinding.FragmentConfigBinding;
 import hu.bme.aut.plaenty.databinding.FragmentDashboardBinding;
 import hu.bme.aut.plaenty.model.Configuration;
 import hu.bme.aut.plaenty.network.ConfigManager;
+import hu.bme.aut.plaenty.network.LoginManager;
 import hu.bme.aut.plaenty.network.NetworkManager;
 
 /**
@@ -28,7 +29,7 @@ import hu.bme.aut.plaenty.network.NetworkManager;
  * Use the {@link ConfigFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ConfigFragment extends Fragment implements ConfigManager.ConfigurationChangeListener {
+public class ConfigFragment extends Fragment implements ConfigManager.ConfigurationChangeListener, LoginManager.LoginStatusListener {
 
     private FragmentConfigBinding binding;
     private ConfigAdapter adapter;
@@ -66,6 +67,7 @@ public class ConfigFragment extends Fragment implements ConfigManager.Configurat
         binding.configRecyclerView.setAdapter(adapter);
         binding.configRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
+        LoginManager.addListener(this);
         ConfigManager.addListener(this);
 
         updateConfigList();
@@ -100,5 +102,11 @@ public class ConfigFragment extends Fragment implements ConfigManager.Configurat
         b.putLong("id", ConfigEditorActivity.CONFIG_CREATION);
         intent.putExtras(b);
         startActivity(intent);
+    }
+
+    @Override
+    public void loginStatusChanged(String username, boolean loggedIn) {
+        adapter.notifyDataSetChanged();
+        binding.createFab.setVisibility(LoginManager.isLoggedIn()? View.VISIBLE : View.GONE);
     }
 }

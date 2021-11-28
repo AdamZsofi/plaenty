@@ -1,5 +1,7 @@
 package hu.bme.aut.plaenty.ui.main;
 
+import static hu.bme.aut.plaenty.util.SensorUtil.formatSensorData;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -20,6 +22,7 @@ import hu.bme.aut.plaenty.model.Configuration;
 import hu.bme.aut.plaenty.model.Sensor;
 import hu.bme.aut.plaenty.model.SensorData;
 import hu.bme.aut.plaenty.network.ConfigManager;
+import hu.bme.aut.plaenty.network.LoginManager;
 import hu.bme.aut.plaenty.network.NetworkManager;
 import hu.bme.aut.plaenty.network.SensorManager;
 
@@ -28,7 +31,7 @@ import hu.bme.aut.plaenty.network.SensorManager;
  * Use the {@link DashboardFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DashboardFragment extends Fragment implements ConfigManager.ConfigurationChangeListener {
+public class DashboardFragment extends Fragment implements ConfigManager.ConfigurationChangeListener, LoginManager.LoginStatusListener {
 
     private FragmentDashboardBinding binding;
 
@@ -44,8 +47,6 @@ public class DashboardFragment extends Fragment implements ConfigManager.Configu
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ConfigManager.addListener(this);
     }
 
     @Override
@@ -58,19 +59,25 @@ public class DashboardFragment extends Fragment implements ConfigManager.Configu
         updateData();
 
         binding.dashboardSwipe.setOnRefreshListener(this::updateData);
+        binding.loginStatus.setOnClickListener(this::startLoginActivity);
+
+        ConfigManager.addListener(this);
+        LoginManager.addListener(this);
 
         return root;
     }
 
     private void updateData(){
         binding.dashboardSwipe.setRefreshing(true);
+        ConfigManager.updateConfigurations(() -> Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
         NetworkManager.callApi(
                 NetworkManager.getInstance().getDashboardAPI().getDashboardData(),
                 systemState -> {
                     Map<Long, SensorData> sensorState = systemState.getSensorState();
-                    binding.ecTextView.setText(formatSensorData(sensorState.get(SensorManager.getEcSensor().getSensorId())));
-                    binding.phTextView.setText(formatSensorData(sensorState.get(SensorManager.getPhSensor().getSensorId())));
-                    binding.lightTextView.setText(formatSensorData(sensorState.get(SensorManager.getLightSensor().getSensorId())));
+                    binding.ecTextView.setText(formatSensorData(sensorState.get(SensorManager.getEcSensor().getSensorId()).getValue()));
+                    binding.phTextView.setText(formatSensorData(sensorState.get(SensorManager.getPhSensor().getSensorId()).getValue()));
+                    binding.lightTextView.setText(formatSensorData(sensorState.get(SensorManager.getLightSensor().getSensorId()).getValue()));
                     binding.dashboardSwipe.setRefreshing(false);
                 },
                 () -> {
@@ -81,8 +88,9 @@ public class DashboardFragment extends Fragment implements ConfigManager.Configu
         );
     }
 
-    private String formatSensorData(SensorData sensorData){
-        return String.format("%.2f",sensorData.getValue());
+    public void startLoginActivity(View v){
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -94,11 +102,22 @@ public class DashboardFragment extends Fragment implements ConfigManager.Configu
     public void activeConfigurationChanged(Configuration activeConfiguration) {
         binding.activeConfigTextView.setText(activeConfiguration.getName());
         binding.activeConfigTextView.setOnClickListener((view) -> {
-            Intent intent = new Intent(getActivity(), ConfigEditorActivity.class);
-            Bundle b = new Bundle();
-            b.putLong("id", activeConfiguration.getId());
-            intent.putExtras(b);
-            startActivity(intent);
+            if(LoginManager.isLoggedIn() && LoginManager.getUsername().equals(activeConfiguration.getAuthor())){
+                Intent intent = new Intent(getActivity(), ConfigEditorActivity.class);
+                Bundle b = new Bundle();
+                b.putLong("id", activeConfiguration.getId());
+                intent.putExtras(b);
+                startActivity(intent);
+            }
         });
+    }
+
+    @Override
+    public void loginStatusChanged(String username, boolean loggedIn) {
+        if(loggedIn) {
+            binding.currentUserTextView.setText(username);
+        } else {
+            binding.currentUserTextView.setText(R.string.not_logged_in);
+        }
     }
 }
