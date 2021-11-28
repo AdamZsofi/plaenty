@@ -54,6 +54,7 @@ public class ConfigFragment extends Fragment implements ConfigManager.Configurat
         binding = FragmentConfigBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        binding.createFab.setOnClickListener(this::createConfig);
 
         adapter = new ConfigAdapter(item -> {
             Intent intent = new Intent(getActivity(), ConfigEditorActivity.class);
@@ -91,5 +92,13 @@ public class ConfigFragment extends Fragment implements ConfigManager.Configurat
     @Override
     public void activeConfigurationChanged(Configuration activeConfiguration) {
         adapter.setActiveConfig(activeConfiguration);
+    }
+
+    public void createConfig(View view){
+        Intent intent = new Intent(getActivity(), ConfigEditorActivity.class);
+        Bundle b = new Bundle();
+        b.putLong("id", ConfigEditorActivity.CONFIG_CREATION);
+        intent.putExtras(b);
+        startActivity(intent);
     }
 }

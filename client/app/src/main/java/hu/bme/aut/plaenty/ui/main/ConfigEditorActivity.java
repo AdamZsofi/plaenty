@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +38,9 @@ public class ConfigEditorActivity extends AppCompatActivity implements ConfigMan
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinner.setAdapter(adapter);
 
+        binding.phSlider.setValues(5f, 7f);
+        binding.ecSlider.setValues(0f, 5f);
+
         binding.ecSlider.addOnChangeListener(
                 (slider, value, fromUser) -> {
                     binding.ecRangeText.setText(formatSensorData(binding.ecSlider.getValues().get(0)) + " - " + formatSensorData(binding.ecSlider.getValues().get(1)));
@@ -53,13 +58,13 @@ public class ConfigEditorActivity extends AppCompatActivity implements ConfigMan
 
     }
 
-    private String formatSensorData(double value){
-        return String.format("%.2f",value);
+    private String formatSensorData(double value) {
+        return String.format("%.2f", value);
     }
 
     private void refreshDisplay() {
 
-        if(configId != CONFIG_CREATION){
+        if (configId != CONFIG_CREATION) {
             Optional<Configuration> itemOptional = ConfigManager.getConfigWithId(configId);
             if (!itemOptional.isPresent()) {
                 Snackbar.make(binding.getRoot(), R.string.config_error, Snackbar.LENGTH_LONG)
@@ -69,10 +74,10 @@ public class ConfigEditorActivity extends AppCompatActivity implements ConfigMan
 
                 binding.configEditorName.setText(item.getName());
                 binding.spinner.setSelection(item.getLightRequired().ordinal());
-                binding.phSlider.setValues((float) item.getPhmin(), (float) item.getPhmax());
-                binding.ecSlider.setValues((float) item.getEcmin(), (float) item.getEcmax());
-                binding.onMinutes.setText(item.getPumpon()+"");
-                binding.offMinutes.setText(item.getPumpoff()+"");
+                binding.phSlider.setValues((float) round(item.getPhmin(), 1), (float) round(item.getPhmax(), 1));
+                binding.ecSlider.setValues((float) round(item.getEcmin(), 1), (float) round(item.getEcmax(), 1));
+                binding.onMinutes.setText(item.getPumpon() + "");
+                binding.offMinutes.setText(item.getPumpoff() + "");
             }
         }
 
@@ -99,7 +104,7 @@ public class ConfigEditorActivity extends AppCompatActivity implements ConfigMan
             newConfiguration.setPumpon(Integer.parseInt(binding.onMinutes.getText().toString()));
             newConfiguration.setPumpoff(Integer.parseInt(binding.offMinutes.getText().toString()));
 
-            if(configId != CONFIG_CREATION){
+            if (configId != CONFIG_CREATION) {
                 newConfiguration.setAuthor(item.getAuthor());
                 newConfiguration.setId(item.getId());
 
@@ -132,4 +137,13 @@ public class ConfigEditorActivity extends AppCompatActivity implements ConfigMan
     public void activeConfigurationChanged(Configuration activeConfiguration) {
 
     }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
 }

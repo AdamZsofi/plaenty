@@ -15,7 +15,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import hu.bme.aut.plaenty.R;
 import hu.bme.aut.plaenty.model.Configuration;
@@ -27,6 +29,7 @@ public class ConfigAdapter
     private Configuration activeConfig = null;
 
     private ShoppingItemClickListener listener;
+    private Map<Configuration, Boolean> openedMap = new HashMap<>();
 
     public ConfigAdapter(ShoppingItemClickListener listener) {
         this.listener = listener;
@@ -48,8 +51,13 @@ public class ConfigAdapter
         Configuration item = items.get(position);
         holder.configName.setText(item.getName());
 
-        holder.configName.setTypeface(null, activeConfig!=null && activeConfig.getId()==item.getId() ? Typeface.BOLD: Typeface.NORMAL);
-//        holder.itemView.setBackgroundColor(activePos == position ? Color.GRAY : Color.TRANSPARENT);
+        holder.configName.setTypeface(null, activeConfig!=null && activeConfig.getId().equals(item.getId()) ? Typeface.BOLD: Typeface.NORMAL);
+        holder.cardView.setOnClickListener(v -> {
+            openedMap.put(item, !openedMap.getOrDefault(item, true));
+            notifyItemChanged(position);
+        });
+        holder.detailsView.setVisibility(openedMap.getOrDefault(item, false).booleanValue()? View.VISIBLE : View.GONE);
+        holder.editButton.setOnClickListener(v -> listener.onItemChanged(item));
 
         holder.item = item;
     }
@@ -79,17 +87,12 @@ public class ConfigAdapter
             editButton = itemView.findViewById(R.id.edit_button);
             detailsView = itemView.findViewById(R.id.config_details);
 
-            cardView.setOnClickListener(v -> detailsView.setVisibility(detailsView.getVisibility() == View.GONE ? View.VISIBLE : View.GONE));
-            editButton.setOnClickListener(v -> {listener.onItemChanged(item);});
+
         }
     }
 
-    public void addItem(Configuration item) {
-        items.add(item);
-        notifyItemInserted(items.size() - 1);
-    }
-
     public void update(List<Configuration> configurations) {
+        configurations.forEach(c -> openedMap.put(c, openedMap.getOrDefault(c, false)));
         items.clear();
         items.addAll(configurations);
         notifyDataSetChanged();

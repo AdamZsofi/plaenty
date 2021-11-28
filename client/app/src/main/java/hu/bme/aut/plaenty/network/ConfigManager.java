@@ -12,6 +12,8 @@ public class ConfigManager {
 
     private static Configuration activeConfiguration = null;
 
+    private static List<Configuration> configurations = new ArrayList<>();
+
     public static void setActiveConfiguration(Configuration activeConfiguration, Runnable error){
         NetworkManager.callApi(NetworkManager.getInstance().getActiveConfigurationAPI().activeConfigurationIdPut(activeConfiguration.getId()),
                 configuration -> updateConfigurations(error),
@@ -38,11 +40,9 @@ public class ConfigManager {
         listeners.forEach(l -> l.activeConfigurationChanged(configuration));
     }
 
-    private static List<Configuration> configurations = new ArrayList<>();
-
     public static Optional<Configuration> getConfigWithId(Long id){
         if(configurations == null) return Optional.ofNullable(null);
-        return configurations.stream().filter(configuration -> configuration.getId() == id).findFirst();
+        return configurations.stream().filter(configuration -> configuration.getId().equals(id)).findFirst();
     }
 
     private static void updateConfiguration(List<Configuration> configurations){
