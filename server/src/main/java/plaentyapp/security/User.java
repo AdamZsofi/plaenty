@@ -1,4 +1,4 @@
-package plaentyapp.model.user;
+package plaentyapp.security;
 
 import lombok.Data;
 

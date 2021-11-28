@@ -135,7 +135,9 @@ public class HydroponicSystem {
 	}
 
 	public Configuration updateConfiguration(Configuration updatedConfig) {
-		return configurationRepository.updateConfiguration(updatedConfig);
+		Configuration updatedConfig = configurationRepository.updateConfiguration(updatedConfig);
+		if(updatedConfig.getId())
+		return updatedConfig;
 	}
 
 	public Configuration saveConfiguration(Configuration newConfiguration) {
