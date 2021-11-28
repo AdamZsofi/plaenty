@@ -8,18 +8,18 @@ import android.widget.ArrayAdapter;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.List;
 import java.util.Optional;
 
 import hu.bme.aut.plaenty.R;
 import hu.bme.aut.plaenty.databinding.ActivityConfigEditorBinding;
-import hu.bme.aut.plaenty.databinding.ActivityMainBinding;
 import hu.bme.aut.plaenty.model.Configuration;
-import hu.bme.aut.plaenty.model.SensorData;
+import hu.bme.aut.plaenty.model.LightLevel;
 import hu.bme.aut.plaenty.network.ConfigManager;
-import hu.bme.aut.plaenty.network.NetworkManager;
 
-public class ConfigEditorActivity extends AppCompatActivity {
+public class ConfigEditorActivity extends AppCompatActivity implements ConfigManager.ConfigurationChangeListener {
 
+    private Long configId = -1L;
     Configuration item = null;
     ActivityConfigEditorBinding binding;
 
@@ -45,16 +45,9 @@ public class ConfigEditorActivity extends AppCompatActivity {
                 });
 
         Bundle bundle = getIntent().getExtras();
-        Long configId = bundle.getLong("id");
+        configId = bundle.getLong("id");
 
-        Optional<Configuration> itemOptional = ConfigManager.getConfigWithId(configId);
-        if (!itemOptional.isPresent()) {
-            Snackbar.make(binding.getRoot(), R.string.config_error, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        } else {
-            item = itemOptional.get();
-            refreshDisplay();
-        }
+        refreshDisplay();
 
     }
 
@@ -63,12 +56,21 @@ public class ConfigEditorActivity extends AppCompatActivity {
     }
 
     private void refreshDisplay() {
-        binding.configEditorName.setText(item.getName());
-        binding.spinner.setSelection(item.getLightRequired().index);
-        binding.phSlider.setValues((float) item.getPhmin(), (float) item.getPhmax());
-        binding.ecSlider.setValues((float) item.getEcmin(), (float) item.getEcmax());
-        binding.onMinutes.setText(item.getPumpon()+"");
-        binding.offMinutes.setText(item.getPumpoff()+"");
+
+        Optional<Configuration> itemOptional = ConfigManager.getConfigWithId(configId);
+        if (!itemOptional.isPresent()) {
+            Snackbar.make(binding.getRoot(), R.string.config_error, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        } else {
+            this.item = itemOptional.get();
+
+            binding.configEditorName.setText(item.getName());
+            binding.spinner.setSelection(item.getLightRequired().ordinal());
+            binding.phSlider.setValues((float) item.getPhmin(), (float) item.getPhmax());
+            binding.ecSlider.setValues((float) item.getEcmin(), (float) item.getEcmax());
+            binding.onMinutes.setText(item.getPumpon()+"");
+            binding.offMinutes.setText(item.getPumpoff()+"");
+        }
     }
 
     public void setAsActive(View view) {
@@ -76,6 +78,41 @@ public class ConfigEditorActivity extends AppCompatActivity {
         ConfigManager.setActiveConfiguration(item,
                 () -> Snackbar.make(binding.getRoot(), R.string.set_active_error, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show());
+
+    }
+
+    public void saveConfig(View view) {
+        try {
+            Configuration newConfiguration = new Configuration();
+
+            newConfiguration.setName(binding.configEditorName.getText().toString());
+            newConfiguration.setEcmin(binding.ecSlider.getValues().get(0));
+            newConfiguration.setEcmax(binding.ecSlider.getValues().get(1));
+            newConfiguration.setPhmin(binding.phSlider.getValues().get(0));
+            newConfiguration.setPhmax(binding.phSlider.getValues().get(1));
+            newConfiguration.setAuthor(item.getAuthor());
+            newConfiguration.setId(item.getId());
+            newConfiguration.setLightRequired(LightLevel.values()[binding.spinner.getSelectedItemPosition()]);
+            newConfiguration.setPumpon(Integer.parseInt(binding.onMinutes.getText().toString()));
+            newConfiguration.setPumpoff(Integer.parseInt(binding.offMinutes.getText().toString()));
+
+            ConfigManager.saveConfiguration(newConfiguration,
+                    () -> Snackbar.make(binding.getRoot(), "Couldn't save configuration", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show());
+
+        } catch (NumberFormatException e) {
+            Snackbar.make(binding.getRoot(), "Invalid pump setting, only integers allowed", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
+    }
+
+    @Override
+    public void configurationsChanged(List<Configuration> configurations) {
+        refreshDisplay();
+    }
+
+    @Override
+    public void activeConfigurationChanged(Configuration activeConfiguration) {
 
     }
 }

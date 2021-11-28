@@ -1,27 +1,16 @@
 package hu.bme.aut.plaenty.network;
 
-import android.accounts.NetworkErrorException;
 import android.view.View;
-
 import com.google.android.material.snackbar.Snackbar;
-
 import hu.bme.aut.plaenty.R;
 import hu.bme.aut.plaenty.model.Sensor;
 import lombok.Getter;
 
 public class SensorManager {
 
-    private static SensorManager instance;
     @Getter private static Sensor ecSensor;
     @Getter private static Sensor phSensor;
     @Getter private static Sensor lightSensor;
-
-    public static SensorManager getInstance() {
-        if (instance == null) {
-            instance = new SensorManager();
-        }
-        return instance;
-    }
 
     public static void initializeSensorData(View errorView) {
         NetworkManager.callApi(

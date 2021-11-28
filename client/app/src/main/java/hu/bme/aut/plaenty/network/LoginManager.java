@@ -29,7 +29,7 @@ public class LoginManager {
     AuthorizationRequest authRequest;
 
     public static final int LOGIN_REQUEST_CODE = 123;
-    private static String token = "";
+    private static String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwbGFlbnR5IiwiZXhwIjoxNjM4MjAyNDU2fQ.rXQZyY5a-30vP2Sb_QTD08cx7X6t2iXLuPzfoCeOfXIPhHN-QU-P_-fbwHNAI8NdAmFCRUQPV93_StvMbDl6YQ";
 
     public static String getToken(){
         return token;

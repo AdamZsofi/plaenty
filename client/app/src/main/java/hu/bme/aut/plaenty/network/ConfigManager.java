@@ -13,8 +13,20 @@ public class ConfigManager {
 
     public static void setActiveConfiguration(Configuration activeConfiguration, Runnable error){
         NetworkManager.callApi(NetworkManager.getInstance().getActiveConfigurationAPI().activeConfigurationIdPut(activeConfiguration.getId()),
-                configuration -> updateConfigurations(() -> error.run()),
-                () -> error.run());
+                configuration -> updateConfigurations(error),
+                error);
+    }
+
+    public static void saveConfiguration(Configuration configuration, Runnable error){
+        NetworkManager.callApi(NetworkManager.getInstance().getConfigAPI().configurationIdPut(configuration),
+                c -> updateConfigurations(error),
+                error);
+    }
+
+    public static void uploadNewConfiguration(Configuration configuration, Runnable error){
+        NetworkManager.callApi(NetworkManager.getInstance().getConfigAPI().configurationPost(configuration),
+                c -> updateConfigurations(error),
+                error);
     }
 
     private static void updateActiveConfiguration(Configuration configuration){
@@ -50,15 +62,11 @@ public class ConfigManager {
 
     public static void updateConfigurations(Runnable error){
         NetworkManager.callApi(NetworkManager.getInstance().getConfigAPI().configurationListGet(),
-                configurations -> {
-                   ConfigManager.updateConfiguration(configurations);
-                },
-                () -> error.run());
+                ConfigManager::updateConfiguration,
+                error);
         NetworkManager.callApi(NetworkManager.getInstance().getActiveConfigurationAPI().getActiveConfiguration(),
-                activeConfiguration -> {
-                    ConfigManager.updateActiveConfiguration(activeConfiguration);
-                },
-                () -> error.run());
+                ConfigManager::updateActiveConfiguration,
+                error);
     }
 
 }

@@ -45,7 +45,7 @@ public class NetworkManager {
                 .baseUrl(SERVICE_URL + "/")
                 .client(new OkHttpClient.Builder().addInterceptor(chain -> {
                     Request request = chain.request();
-                    request = request.newBuilder().header("Authorization", "token "+LoginManager.getToken()).build();
+                    request = request.newBuilder().header("Authorization", "Bearer "+LoginManager.getToken()).build();
                     return chain.proceed(request);
                 }).build())
                 .addConverterFactory(GsonConverterFactory.create())

@@ -87,7 +87,7 @@ public class DashboardFragment extends Fragment implements ConfigManager.Configu
 
     @Override
     public void configurationsChanged(List<Configuration> configurations) {
-
+        
     }
 
     @Override
