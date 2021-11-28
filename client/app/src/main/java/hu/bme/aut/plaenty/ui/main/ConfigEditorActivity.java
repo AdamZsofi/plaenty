@@ -53,9 +53,9 @@ public class ConfigEditorActivity extends AppCompatActivity implements ConfigMan
                     binding.phRangeText.setText(formatSensorData(binding.phSlider.getValues().get(0)) + " - " + formatSensorData(binding.phSlider.getValues().get(1)));
                 });
 
-        // To trigger listener
-        binding.phSlider.setValues(binding.phSlider.getValues());
-        binding.ecSlider.setValues(binding.ecSlider.getValues());
+        // Set initial display
+        binding.ecRangeText.setText(formatSensorData(binding.ecSlider.getValues().get(0)) + " - " + formatSensorData(binding.ecSlider.getValues().get(1)));
+        binding.phRangeText.setText(formatSensorData(binding.phSlider.getValues().get(0)) + " - " + formatSensorData(binding.phSlider.getValues().get(1)));
 
         Bundle bundle = getIntent().getExtras();
         configId = bundle.getLong("id");

@@ -64,6 +64,12 @@ public class ConfigManager {
         if(configurations!=null) listener.configurationsChanged(configurations);
     }
 
+    public static void deleteConfiguration(Configuration configuration, Runnable error){
+//        NetworkManager.callApi(NetworkManager.getInstance().getConfigAPI().(configuration),
+//                c -> updateConfigurations(error),
+//                error);
+    }
+
     public static void updateConfigurations(Runnable error){
         NetworkManager.callApi(NetworkManager.getInstance().getConfigAPI().configurationListGet(),
                 ConfigManager::updateConfiguration,
