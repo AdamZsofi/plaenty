@@ -23,6 +23,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +34,7 @@ import hu.bme.aut.plaenty.databinding.ActivityConfigEditorBinding;
 import hu.bme.aut.plaenty.databinding.ActivityDiagramBinding;
 import hu.bme.aut.plaenty.model.Sensor;
 import hu.bme.aut.plaenty.model.SensorData;
+import hu.bme.aut.plaenty.model.SystemState;
 import hu.bme.aut.plaenty.network.NetworkManager;
 import hu.bme.aut.plaenty.network.SensorManager;
 
@@ -57,18 +59,27 @@ public class DiagramActivity extends AppCompatActivity {
 
         setTime(LocalDate.now().atStartOfDay());
 
-        DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> setTime(LocalDateTime.of(year, monthOfYear, dayOfMonth, 0, 0));
-        binding.date.setOnClickListener(v -> new DatePickerDialog(DiagramActivity.this, date, time.getYear(), time.getMonthValue(), time.getDayOfMonth()).show());
+        DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> setTime(LocalDateTime.of(year, monthOfYear + 1, dayOfMonth, 0, 0));
+        binding.date.setOnClickListener(v -> {
+            DatePickerDialog dialog = new DatePickerDialog(DiagramActivity.this, date, time.getYear(), time.getMonthValue() - 1 , time.getDayOfMonth());
+            dialog.show();
+        });
 
     }
 
     private void setTime(LocalDateTime time){
-        this.time = time;
-        binding.date.setText(time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        NetworkManager.callApi(NetworkManager.getInstance().getSensorsAPI().sendSensorData(sensorId, time),
-                DiagramActivity.this::displaySensorData,
-                () -> Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show());
+        if(time.isBefore(LocalDateTime.now())){
+            this.time = time;
+            binding.date.setText(time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            NetworkManager.callApi(NetworkManager.getInstance().getSensorsAPI().sendSensorData(sensorId, time),
+                    DiagramActivity.this::displaySensorData,
+                    () -> Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show());
+        } else {
+            Snackbar.make(binding.getRoot(), "Can't select a future date!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
+
     }
 
     private void displaySensorData(List<SensorData> sensorData){
