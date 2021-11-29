@@ -1,8 +1,10 @@
 package hu.bme.aut.plaenty.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.DatePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
@@ -51,6 +53,8 @@ public class DiagramActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         sensorId = bundle.getLong("id");
 
+        getSupportActionBar().setTitle(SensorManager.getSensorWithId(sensorId).getName());
+
         setTime(LocalDate.now().atStartOfDay());
 
         DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> setTime(LocalDateTime.of(year, monthOfYear, dayOfMonth, 0, 0));
@@ -78,7 +82,9 @@ public class DiagramActivity extends AppCompatActivity {
         entries.sort(Comparator.comparingDouble(value -> value.getX()));
 
         LineDataSet dataSet = new LineDataSet(entries, "Measurements"); // add entries to dataset
-        dataSet.setColor(R.color.design_default_color_primary);
+        dataSet.setColor(ContextCompat.getColor(this, R.color.green));
+        dataSet.setCircleColor(ContextCompat.getColor(this, R.color.lightgreen));
+        dataSet.setDrawCircles(true);
 
         LineData lineData = new LineData(dataSet);
         binding.chart.getXAxis().setValueFormatter(new LineChartXAxisValueFormatter());
