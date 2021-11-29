@@ -27,9 +27,8 @@ public class ActiveConfigurationController {
 		}
 	}
 
-	// TODO how does oauth sec work?
 	@PutMapping("{id}")
-	public ResponseEntity<Configuration> activeConfigurationIdPut(@PathVariable Integer id) {
+	public ResponseEntity<Configuration> activeConfigurationIdPut(@PathVariable Long id) {
 		try {
 			return ResponseEntity.ok(hydroponicSystem.updateActiveConfiguration(id));
 		} catch (ConfigurationNotFoundException e) {

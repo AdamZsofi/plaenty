@@ -23,7 +23,7 @@ public class SensorController {
 	HydroponicSystem system;
 
 	@GetMapping("/data/{sensorid}")
-	public ResponseEntity<List<SensorData>> sendSensorData(@PathVariable Integer sensorid, @Valid @RequestParam(value = "from", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from) {
+	public ResponseEntity<List<SensorData>> sendSensorData(@PathVariable Long sensorid, @Valid @RequestParam(value = "from", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from) {
 		List<SensorData> sensorData;
 		if(from!=null) {
 			sensorData = system.getSensorData(sensorid, from);

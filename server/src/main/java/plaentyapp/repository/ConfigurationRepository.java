@@ -1,16 +1,12 @@
 package plaentyapp.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import plaentyapp.model.configuration.ConfigurationNotFoundException;
 import plaentyapp.model.configuration.Configuration;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PreDestroy;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 @Repository
@@ -47,5 +43,16 @@ public class ConfigurationRepository {
 	public List<Configuration> getConfigurationList() {
 		return em.createQuery("SELECT c FROM Configuration c", Configuration.class)
 				.getResultList();
+	}
+
+	@Transactional
+	public boolean deleteConfiguration(long id) {
+		Configuration config = getConfiguration(id);
+		if(config==null) {
+			return false;
+		}
+
+		em.remove(config);
+		return true;
 	}
 }

@@ -76,7 +76,7 @@ public class HydroponicSystem {
 
 	// not scheduled, as that cannot change the rates at runtime
 	private void startPumpCycle() {
-		logger.info("Starting pump cycle, adding timers...");
+		logger.info("(Re)starting pump cycle, adding timers...");
 		if(pumpOnTimer!=null) {
 			pumpOnTimer.cancel();
 		}
@@ -108,7 +108,7 @@ public class HydroponicSystem {
 		logger.info("Pump cycle timers set");
 	}
 
-	@Scheduled(fixedRate=5*60000)
+	@Scheduled(fixedRate=30000)
 	public void updateSensors() {
 		logger.info("Taking sensor measurements");
 		for (Sensor sensor : sensors.getSensorList()) {
@@ -131,11 +131,16 @@ public class HydroponicSystem {
 		logger.info("Updating active configuration");
 		activeConfiguration = configurationRepository.getConfiguration(configId);
 		logger.info("Active configuration set to new value: " + activeConfiguration);
+		startPumpCycle();
 		return activeConfiguration;
 	}
 
 	public Configuration updateConfiguration(Configuration updatedConfig) {
-		return configurationRepository.updateConfiguration(updatedConfig);
+		updatedConfig = configurationRepository.updateConfiguration(updatedConfig);
+		if(updatedConfig.getId().equals(activeConfiguration.getId())) {
+			updateActiveConfiguration(updatedConfig.getId());
+		}
+		return updatedConfig;
 	}
 
 	public Configuration saveConfiguration(Configuration newConfiguration) {
@@ -156,7 +161,7 @@ public class HydroponicSystem {
 		return activeConfiguration;
 	}
 
-	public Configuration getConfiguration(Integer id) {
+	public Configuration getConfiguration(long id) {
 		return configurationRepository.getConfiguration(id);
 	}
 
@@ -164,11 +169,11 @@ public class HydroponicSystem {
 		return configurationRepository.getConfigurationList();
 	}
 
-	public List<SensorData> getSensorData(Integer sensorid, LocalDateTime from) {
+	public List<SensorData> getSensorData(long sensorid, LocalDateTime from) {
 		return sensorDataRepository.getSensorData(sensors.getSensorById(sensorid), from);
 	}
 
-	public List<SensorData> getSensorData(Integer sensorid) {
+	public List<SensorData> getSensorData(long sensorid) {
 		return sensorDataRepository.getSensorData(sensors.getSensorById(sensorid));
 	}
 
@@ -184,5 +189,12 @@ public class HydroponicSystem {
 		growlight.turnActuatorOff();
 		pump.turnActuatorOff();
 		logger.info("Actuators turned off successfully");
+	}
+
+	public boolean deleteConfiguration(long id) {
+		if(id==activeConfiguration.getId()) {
+			return false;
+		}
+		return configurationRepository.deleteConfiguration(id);
 	}
 }
