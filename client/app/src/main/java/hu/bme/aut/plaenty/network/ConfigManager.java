@@ -65,9 +65,9 @@ public class ConfigManager {
     }
 
     public static void deleteConfiguration(Configuration configuration, Runnable error){
-//        NetworkManager.callApi(NetworkManager.getInstance().getConfigAPI().(configuration),
-//                c -> updateConfigurations(error),
-//                error);
+        NetworkManager.callApi(NetworkManager.getInstance().getConfigAPI().configurationDelete(configuration.getId()),
+                c -> updateConfigurations(error),
+                error);
     }
 
     public static void updateConfigurations(Runnable error){

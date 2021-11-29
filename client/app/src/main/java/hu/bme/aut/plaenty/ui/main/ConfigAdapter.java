@@ -3,7 +3,6 @@ package hu.bme.aut.plaenty.ui.main;
 import static hu.bme.aut.plaenty.util.SensorUtil.formatSensorData;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,7 +66,9 @@ public class ConfigAdapter
         });
         holder.detailsView.setVisibility(openedMap.getOrDefault(item, false).booleanValue()? View.VISIBLE : View.GONE);
         holder.editButton.setVisibility(LoginManager.isLoggedIn() && LoginManager.getUsername().equals(item.getAuthor())? View.VISIBLE : View.GONE);
-        holder.editButton.setOnClickListener(v -> listener.onItemChanged(item));
+        holder.deleteButton.setVisibility(LoginManager.isLoggedIn() && LoginManager.getUsername().equals(item.getAuthor())? View.VISIBLE : View.GONE);
+        holder.editButton.setOnClickListener(v -> listener.onItemEdit(item));
+        holder.deleteButton.setOnClickListener(v -> listener.onItemDelete(item));
 
         holder.item = item;
     }
@@ -78,7 +79,8 @@ public class ConfigAdapter
     }
 
     public interface ShoppingItemClickListener{
-        void onItemChanged(Configuration item);
+        void onItemEdit(Configuration item);
+        void onItemDelete(Configuration item);
     }
 
     class ConfigViewHolder extends RecyclerView.ViewHolder {
@@ -86,6 +88,7 @@ public class ConfigAdapter
         CardView cardView;
         TextView configName;
         ImageView editButton;
+        ImageView deleteButton;
         CoordinatorLayout detailsView;
 
         TextView dropdownAuthor;
@@ -101,6 +104,7 @@ public class ConfigAdapter
             configName = itemView.findViewById(R.id.config_name);
             cardView = itemView.findViewById(R.id.config_card);
             editButton = itemView.findViewById(R.id.edit_button);
+            deleteButton = itemView.findViewById(R.id.delete_button);
             detailsView = itemView.findViewById(R.id.config_details);
 
             dropdownAuthor = itemView.findViewById(R.id.dropdown_author);

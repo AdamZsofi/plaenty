@@ -29,7 +29,7 @@ import hu.bme.aut.plaenty.network.NetworkManager;
  * Use the {@link ConfigFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ConfigFragment extends Fragment implements ConfigManager.ConfigurationChangeListener, LoginManager.LoginStatusListener {
+public class ConfigFragment extends Fragment implements ConfigManager.ConfigurationChangeListener, LoginManager.LoginStatusListener, ConfigAdapter.ShoppingItemClickListener {
 
     private FragmentConfigBinding binding;
     private ConfigAdapter adapter;
@@ -57,13 +57,7 @@ public class ConfigFragment extends Fragment implements ConfigManager.Configurat
 
         binding.createFab.setOnClickListener(this::createConfig);
 
-        adapter = new ConfigAdapter(item -> {
-            Intent intent = new Intent(getActivity(), ConfigEditorActivity.class);
-            Bundle b = new Bundle();
-            b.putLong("id", item.getId());
-            intent.putExtras(b);
-            startActivity(intent);
-        });
+        adapter = new ConfigAdapter(this);
         binding.configRecyclerView.setAdapter(adapter);
         binding.configRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
@@ -96,7 +90,7 @@ public class ConfigFragment extends Fragment implements ConfigManager.Configurat
         adapter.setActiveConfig(activeConfiguration);
     }
 
-    public void createConfig(View view){
+    public void createConfig(View view) {
         Intent intent = new Intent(getActivity(), ConfigEditorActivity.class);
         Bundle b = new Bundle();
         b.putLong("id", ConfigEditorActivity.CONFIG_CREATION);
@@ -107,6 +101,22 @@ public class ConfigFragment extends Fragment implements ConfigManager.Configurat
     @Override
     public void loginStatusChanged(String username, boolean loggedIn) {
         adapter.notifyDataSetChanged();
-        binding.createFab.setVisibility(LoginManager.isLoggedIn()? View.VISIBLE : View.GONE);
+        binding.createFab.setVisibility(LoginManager.isLoggedIn() ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onItemEdit(Configuration item) {
+        Intent intent = new Intent(getActivity(), ConfigEditorActivity.class);
+        Bundle b = new Bundle();
+        b.putLong("id", item.getId());
+        intent.putExtras(b);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onItemDelete(Configuration item) {
+        ConfigManager.deleteConfiguration(item,
+                () -> Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show());
     }
 }

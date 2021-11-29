@@ -5,11 +5,13 @@ import static hu.bme.aut.plaenty.util.SensorUtil.formatSensorData;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -34,6 +36,12 @@ import hu.bme.aut.plaenty.network.SensorManager;
 public class DashboardFragment extends Fragment implements ConfigManager.ConfigurationChangeListener, LoginManager.LoginStatusListener {
 
     private FragmentDashboardBinding binding;
+    private CoordinatorLayout configDetails;
+    private TextView author;
+    private TextView ecRange;
+    private TextView phRange;
+    private TextView lightReq;
+    private TextView pump;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -55,6 +63,17 @@ public class DashboardFragment extends Fragment implements ConfigManager.Configu
 
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        binding.activeConfigTextView.setOnClickListener((view) -> {
+            configDetails.setVisibility(configDetails.getVisibility() == View.VISIBLE? View.GONE: View.VISIBLE);
+        });
+
+        configDetails = root.findViewById(R.id.config_details);
+        author = root.findViewById(R.id.dropdown_author);
+        ecRange = root.findViewById(R.id.dropdown_ec);
+        phRange = root.findViewById(R.id.dropdown_ph);
+        lightReq = root.findViewById(R.id.dropdown_light);
+        pump = root.findViewById(R.id.dropdown_pump);
 
         updateData();
 
@@ -113,15 +132,11 @@ public class DashboardFragment extends Fragment implements ConfigManager.Configu
     @Override
     public void activeConfigurationChanged(Configuration activeConfiguration) {
         binding.activeConfigTextView.setText(activeConfiguration.getName());
-        binding.activeConfigTextView.setOnClickListener((view) -> {
-            if(LoginManager.isLoggedIn() && LoginManager.getUsername().equals(activeConfiguration.getAuthor())){
-                Intent intent = new Intent(getActivity(), ConfigEditorActivity.class);
-                Bundle b = new Bundle();
-                b.putLong("id", activeConfiguration.getId());
-                intent.putExtras(b);
-                startActivity(intent);
-            }
-        });
+        ecRange.setText(formatSensorData(activeConfiguration.getEcmin())+" - "+formatSensorData(activeConfiguration.getEcmax()));
+        phRange.setText(formatSensorData(activeConfiguration.getPhmin())+" - "+formatSensorData(activeConfiguration.getPhmax()));
+        author.setText(activeConfiguration.getAuthor());
+        pump.setText(activeConfiguration.getPumpon()+"/"+ activeConfiguration.getPumpoff());
+        lightReq.setText(activeConfiguration.getLightRequired().toString());
     }
 
     @Override

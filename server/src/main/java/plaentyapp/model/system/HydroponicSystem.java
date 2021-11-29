@@ -195,6 +195,6 @@ public class HydroponicSystem {
 		if(id==activeConfiguration.getId()) {
 			return false;
 		}
-		return configurationRepository.deleteConfiguration(id));
+		return configurationRepository.deleteConfiguration(id);
 	}
 }

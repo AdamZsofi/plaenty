@@ -23,10 +23,10 @@
                 android:weightSum="1">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/ec_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:id="@+id/ec_card"
                     android:layout_weight="0.5">
 
                     <LinearLayout
@@ -69,10 +69,10 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/ph_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:id="@+id/ph_card"
                     android:layout_weight="0.5">
 
                     <LinearLayout
@@ -101,10 +101,11 @@
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/light_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/light_card"
-                android:layout_margin="5dp">
+                android:layout_margin="5dp"
+                android:layout_marginBottom="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -152,31 +153,61 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/active_config" />
+                        android:translationZ="1dp">
 
-                    <TextView
-                        android:id="@+id/activeConfigTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/nan"
-                        android:textSize="30dp"
-                        android:textStyle="bold" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/active_config" />
+
+                            <TextView
+                                android:id="@+id/activeConfigTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/nan"
+                                android:textSize="30dp"
+                                android:textStyle="bold" />
+
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <include
+                            layout="@layout/config_details"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="5dp"
+                            android:layout_marginBottom="5dp"/>
+
+                    </androidx.cardview.widget.CardView>
+
 
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
+
             <androidx.cardview.widget.CardView
+                android:id="@+id/login_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:id="@+id/login_status">
+                android:layout_margin="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
