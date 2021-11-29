@@ -18,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkManager {
 
-    private static final String SERVICE_URL = "http://217.197.189.128:9000";
+    private static final String SERVICE_URL = "http://mondokm.sch.bme.hu:9000";
 
     private static NetworkManager instance;
 
