@@ -23,7 +23,7 @@ import hu.bme.aut.plaenty.network.ConfigManager;
 
 public class ConfigEditorActivity extends AppCompatActivity implements ConfigManager.ConfigurationChangeListener {
 
-    private Long configId = -1L;
+    private Long configId = CONFIG_CREATION;
     Configuration item = null;
     ActivityConfigEditorBinding binding;
 
@@ -60,6 +60,8 @@ public class ConfigEditorActivity extends AppCompatActivity implements ConfigMan
         Bundle bundle = getIntent().getExtras();
         configId = bundle.getLong("id");
 
+        ConfigManager.addListener(this);
+
         refreshDisplay();
 
     }
@@ -80,6 +82,8 @@ public class ConfigEditorActivity extends AppCompatActivity implements ConfigMan
                 binding.ecSlider.setValues((float) round(item.getEcmin(), 1), (float) round(item.getEcmax(), 1));
                 binding.onMinutes.setText(item.getPumpon() + "");
                 binding.offMinutes.setText(item.getPumpoff() + "");
+
+                binding.fab.setEnabled(true);
             }
         }
 
@@ -117,8 +121,14 @@ public class ConfigEditorActivity extends AppCompatActivity implements ConfigMan
                 newConfiguration.setAuthor("");
                 newConfiguration.setId(0L);
 
+                binding.fab.setEnabled(false);
+
                 ConfigManager.uploadNewConfiguration(newConfiguration,
-                        (newId) -> configId = newId,
+                        (newId) -> {
+                            configId = newId;
+                            Snackbar.make(binding.getRoot(), "Successfully created configuration", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        },
                         () -> Snackbar.make(binding.getRoot(), "Couldn't save configuration", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show());
             }

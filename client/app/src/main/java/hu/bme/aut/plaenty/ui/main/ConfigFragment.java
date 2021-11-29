@@ -1,5 +1,7 @@
 package hu.bme.aut.plaenty.ui.main;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -115,8 +117,15 @@ public class ConfigFragment extends Fragment implements ConfigManager.Configurat
 
     @Override
     public void onItemDelete(Configuration item) {
-        ConfigManager.deleteConfiguration(item,
-                () -> Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show());
+        new AlertDialog.Builder(this.getContext()).setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Deleting configuration").setMessage("Are you sure you want to delete this confugration?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ConfigManager.deleteConfiguration(item,
+                                () -> Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show());
+                    }
+                }).setNegativeButton("No", null).show();
     }
 }
