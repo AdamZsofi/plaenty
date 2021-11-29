@@ -6,10 +6,12 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import hu.bme.aut.plaenty.model.Configuration;
+import lombok.Getter;
 
 
 public class ConfigManager {
 
+    @Getter
     private static Configuration activeConfiguration = null;
 
     private static List<Configuration> configurations = new ArrayList<>();

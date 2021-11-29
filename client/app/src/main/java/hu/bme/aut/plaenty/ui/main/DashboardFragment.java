@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -42,6 +43,9 @@ public class DashboardFragment extends Fragment implements ConfigManager.Configu
     private TextView phRange;
     private TextView lightReq;
     private TextView pump;
+    private ImageView editButton;
+
+    private Configuration activeConfiguration = null;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -74,6 +78,12 @@ public class DashboardFragment extends Fragment implements ConfigManager.Configu
         phRange = root.findViewById(R.id.dropdown_ph);
         lightReq = root.findViewById(R.id.dropdown_light);
         pump = root.findViewById(R.id.dropdown_pump);
+        editButton = root.findViewById(R.id.edit_button);
+        ImageView deleteButton = root.findViewById(R.id.delete_button);
+        ImageView activateButton = root.findViewById(R.id.activate_button);
+
+        deleteButton.setVisibility(View.GONE);
+        activateButton.setVisibility(View.GONE);
 
         updateData();
 
@@ -131,20 +141,37 @@ public class DashboardFragment extends Fragment implements ConfigManager.Configu
 
     @Override
     public void activeConfigurationChanged(Configuration activeConfiguration) {
-        binding.activeConfigTextView.setText(activeConfiguration.getName());
-        ecRange.setText(formatSensorData(activeConfiguration.getEcmin())+" - "+formatSensorData(activeConfiguration.getEcmax()));
-        phRange.setText(formatSensorData(activeConfiguration.getPhmin())+" - "+formatSensorData(activeConfiguration.getPhmax()));
-        author.setText(activeConfiguration.getAuthor());
-        pump.setText(activeConfiguration.getPumpon()+"/"+ activeConfiguration.getPumpoff());
-        lightReq.setText(activeConfiguration.getLightRequired().toString());
+        this.activeConfiguration = activeConfiguration;
+        bindActiveConfiguration();
+    }
+
+    private void bindActiveConfiguration(){
+        if(activeConfiguration != null){
+            binding.activeConfigTextView.setText(activeConfiguration.getName());
+            ecRange.setText(formatSensorData(activeConfiguration.getEcmin())+" - "+formatSensorData(activeConfiguration.getEcmax()));
+            phRange.setText(formatSensorData(activeConfiguration.getPhmin())+" - "+formatSensorData(activeConfiguration.getPhmax()));
+            author.setText(activeConfiguration.getAuthor());
+            pump.setText(activeConfiguration.getPumpon()+"/"+ activeConfiguration.getPumpoff());
+            lightReq.setText(activeConfiguration.getLightRequired().toString());
+            editButton.setVisibility(LoginManager.isLoggedIn() && LoginManager.getUsername().equals(activeConfiguration.getAuthor()) ? View.VISIBLE : View.GONE);
+            editButton.setOnClickListener(v -> {
+                Intent intent = new Intent(getActivity(), ConfigEditorActivity.class);
+                Bundle b = new Bundle();
+                b.putLong("id", activeConfiguration.getId());
+                intent.putExtras(b);
+                startActivity(intent);
+            });
+        }
     }
 
     @Override
     public void loginStatusChanged(String username, boolean loggedIn) {
         if(loggedIn) {
             binding.currentUserTextView.setText(username);
+            bindActiveConfiguration();
         } else {
             binding.currentUserTextView.setText(R.string.not_logged_in);
+            bindActiveConfiguration();
         }
     }
 }

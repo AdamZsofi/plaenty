@@ -128,4 +128,11 @@ public class ConfigFragment extends Fragment implements ConfigManager.Configurat
                     }
                 }).setNegativeButton("No", null).show();
     }
+
+    @Override
+    public void onItemActivate(Configuration item) {
+        ConfigManager.setActiveConfiguration(item,
+                () -> Snackbar.make(binding.getRoot(), R.string.set_active_error, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show());
+    }
 }

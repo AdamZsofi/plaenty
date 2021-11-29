@@ -22,6 +22,7 @@ import java.util.Map;
 
 import hu.bme.aut.plaenty.R;
 import hu.bme.aut.plaenty.model.Configuration;
+import hu.bme.aut.plaenty.network.ConfigManager;
 import hu.bme.aut.plaenty.network.LoginManager;
 
 public class ConfigAdapter
@@ -66,9 +67,11 @@ public class ConfigAdapter
         });
         holder.detailsView.setVisibility(openedMap.getOrDefault(item, false).booleanValue()? View.VISIBLE : View.GONE);
         holder.editButton.setVisibility(LoginManager.isLoggedIn() && LoginManager.getUsername().equals(item.getAuthor())? View.VISIBLE : View.GONE);
-        holder.deleteButton.setVisibility(LoginManager.isLoggedIn() && LoginManager.getUsername().equals(item.getAuthor())? View.VISIBLE : View.GONE);
+        holder.deleteButton.setVisibility(LoginManager.isLoggedIn() && LoginManager.getUsername().equals(item.getAuthor()) && !ConfigManager.getActiveConfiguration().getId().equals(item.getId()) ? View.VISIBLE : View.GONE);
+        holder.activateButton.setVisibility(LoginManager.isLoggedIn() && !item.getId().equals(ConfigManager.getActiveConfiguration().getId())? View.VISIBLE : View.GONE);
         holder.editButton.setOnClickListener(v -> listener.onItemEdit(item));
         holder.deleteButton.setOnClickListener(v -> listener.onItemDelete(item));
+        holder.activateButton.setOnClickListener(v -> listener.onItemActivate(item));
 
         holder.item = item;
     }
@@ -81,6 +84,7 @@ public class ConfigAdapter
     public interface ShoppingItemClickListener{
         void onItemEdit(Configuration item);
         void onItemDelete(Configuration item);
+        void onItemActivate(Configuration item);
     }
 
     class ConfigViewHolder extends RecyclerView.ViewHolder {
@@ -89,6 +93,7 @@ public class ConfigAdapter
         TextView configName;
         ImageView editButton;
         ImageView deleteButton;
+        ImageView activateButton;
         CoordinatorLayout detailsView;
 
         TextView dropdownAuthor;
@@ -105,6 +110,7 @@ public class ConfigAdapter
             cardView = itemView.findViewById(R.id.config_card);
             editButton = itemView.findViewById(R.id.edit_button);
             deleteButton = itemView.findViewById(R.id.delete_button);
+            activateButton = itemView.findViewById(R.id.activate_button);
             detailsView = itemView.findViewById(R.id.config_details);
 
             dropdownAuthor = itemView.findViewById(R.id.dropdown_author);

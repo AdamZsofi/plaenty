@@ -9,8 +9,6 @@ import plaentyapp.security.User;
 import plaentyapp.repository.UserRepository;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Validated
