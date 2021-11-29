@@ -11,7 +11,6 @@ public class LoginManager {
 
     private static List<LoginStatusListener> listeners = new ArrayList<>();
 
-//    private static String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwbGFlbnR5IiwiZXhwIjoxNjM4MjAyNDU2fQ.rXQZyY5a-30vP2Sb_QTD08cx7X6t2iXLuPzfoCeOfXIPhHN-QU-P_-fbwHNAI8NdAmFCRUQPV93_StvMbDl6YQ";
     @Getter
     private static String token = "";
     @Getter
