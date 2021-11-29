@@ -3,6 +3,7 @@ package hu.bme.aut.plaenty.ui.main;
 import static hu.bme.aut.plaenty.util.SensorUtil.formatSensorData;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -44,6 +45,9 @@ public class DashboardFragment extends Fragment implements ConfigManager.Configu
     private TextView lightReq;
     private TextView pump;
     private ImageView editButton;
+
+    private SensorData ecData = null;
+    private SensorData phData = null;
 
     private Configuration activeConfiguration = null;
 
@@ -112,14 +116,20 @@ public class DashboardFragment extends Fragment implements ConfigManager.Configu
                 NetworkManager.getInstance().getDashboardAPI().getDashboardData(),
                 systemState -> {
                     Map<Long, SensorData> sensorState = systemState.getSensorState();
-                    binding.ecTextView.setText(formatSensorData(sensorState.get(SensorManager.getEcSensor().getSensorId()).getValue()));
-                    binding.phTextView.setText(formatSensorData(sensorState.get(SensorManager.getPhSensor().getSensorId()).getValue()));
+                    ecData = sensorState.get(SensorManager.getEcSensor().getSensorId());
+                    phData = sensorState.get(SensorManager.getPhSensor().getSensorId());
+
                     binding.lightTextView.setText(formatSensorData(sensorState.get(SensorManager.getLightSensor().getSensorId()).getValue()));
                     binding.dashboardSwipe.setRefreshing(false);
+
+                    binding.pumpTextView.setText(systemState.isPumpOn()? "On" : "Off");
+                    binding.lightActTextView.setText(systemState.isGrowlightOn()? "On" : "Off");
 
                     binding.phCard.setOnClickListener(v -> startDiagramActivity(SensorManager.getPhSensor()));
                     binding.ecCard.setOnClickListener(v -> startDiagramActivity(SensorManager.getEcSensor()));
                     binding.lightCard.setOnClickListener(v -> startDiagramActivity(SensorManager.getLightSensor()));
+
+                    updateSensorDisplay();
                 },
                 () -> {
                     Snackbar.make(binding.getRoot(), R.string.network_error, Snackbar.LENGTH_LONG)
@@ -127,6 +137,38 @@ public class DashboardFragment extends Fragment implements ConfigManager.Configu
                     binding.dashboardSwipe.setRefreshing(false);
                 }
         );
+    }
+
+    private void updateSensorDisplay(){
+        if(ecData != null && phData != null){
+            binding.ecTextView.setText(formatSensorData(ecData.getValue()));
+            binding.phTextView.setText(formatSensorData(phData.getValue()));
+            if(activeConfiguration != null){
+                if(!inRange(ecData.getValue(),activeConfiguration.getEcmin(),activeConfiguration.getEcmax())){
+                    binding.ecCard.setBackgroundColor(Color.RED);
+                    binding.ecTextView.setTextColor(Color.WHITE);
+                } else {
+                    binding.ecCard.setBackgroundColor(Color.WHITE);
+                    binding.ecTextView.setTextColor(getResources().getColor(android.R.color.tab_indicator_text));
+                }
+                if(!inRange(phData.getValue(),activeConfiguration.getPhmin(),activeConfiguration.getPhmax())){
+                    binding.phCard.setBackgroundColor(Color.RED);
+                    binding.phTextView.setTextColor(Color.WHITE);
+                } else {
+                    binding.phCard.setBackgroundColor(Color.WHITE);
+                    binding.phTextView.setTextColor(getResources().getColor(android.R.color.tab_indicator_text));
+                }
+                return;
+            }
+        }
+        binding.ecCard.setBackgroundColor(Color.WHITE);
+        binding.ecTextView.setTextColor(getResources().getColor(android.R.color.tab_indicator_text));
+        binding.phCard.setBackgroundColor(Color.WHITE);
+        binding.phTextView.setTextColor(getResources().getColor(android.R.color.tab_indicator_text));
+    }
+
+    private boolean inRange(double value, double min, double max){
+        return value >= min && value <= max;
     }
 
     public void startLoginActivity(View v){
@@ -143,6 +185,7 @@ public class DashboardFragment extends Fragment implements ConfigManager.Configu
     public void activeConfigurationChanged(Configuration activeConfiguration) {
         this.activeConfiguration = activeConfiguration;
         bindActiveConfiguration();
+        updateSensorDisplay();
     }
 
     private void bindActiveConfiguration(){
